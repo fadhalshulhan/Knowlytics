@@ -1,0 +1,18 @@
+npm init -y
+npm i pg express ejs sequelize
+npm i -D sequelize-cli
+
+npx sequelize init (ini buat folder dll)
+npm install bcrypt
+
+
+npx sequelize-cli model:generate --name User --attributes username:string,email:string,password:string,role:string,isVerified:boolean
+npx sequelize-cli model:generate --name UserProfile --attributes userid:integer,fullname:string,phone:string
+
+npx sequelize-cli db:migrate
+
+npx sequelize-cli seed:generate --name seed-users
+
+npx sequelize-cli seed:generate --name seed-user-profiles
+
+npx sequelize-cli db:seed:all
