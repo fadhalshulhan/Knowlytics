@@ -1,12 +1,16 @@
+Saya telah melihat gambar yang Anda bagikan, yang menunjukkan daftar file di folder `migrations` dan `seeders` untuk proyek Knowlytics MVP. Berdasarkan file-file tersebut, saya dapat memperbarui `README.md` untuk mencerminkan struktur database yang lebih lengkap, termasuk tabel-tabel tambahan seperti `Categories`, `Lessons`, `UserProfiles`, dan `CourseCategories`, serta hubungan antar tabel yang sesuai. Saya juga akan memperbarui bagian **Sequelize CLI Commands** untuk mencakup perintah pembuatan model dan migrasi yang sesuai dengan file yang ada.
+
+Berikut adalah `README.md` yang telah diperbarui:
+
+---
+
 # Knowlytics MVP
 
 ![Knowlytics Banner](https://via.placeholder.com/1200x300.png?text=Knowlytics+-+Minimal+EdTech+Platform)
 
-**Knowlytics MVP** is a minimal implementation of an Education Technology (EdTech) platform designed to demonstrate core functionality for online learning. Users can register, log in, browse courses, and purchase courses using Stripe. Admins can manage courses by creating and deleting them. Invoices are generated using EasyInvoice after each successful purchase, providing a seamless experience for tracking transactions.
+**Knowlytics MVP** is a minimal implementation of an Education Technology (EdTech) platform designed to demonstrate core functionality for online learning. Users can register as either students or instructors, log in, and browse courses. Students can purchase existing courses using Stripe, while instructors cannot create courses. Invoices are generated using EasyInvoice after each successful purchase, providing a seamless experience for tracking transactions.
 
 This MVP focuses on essential features to validate the concept, with plans for future enhancements like email notifications, file uploads, and additional analytics.
-
----
 
 ## Table of Contents
 
@@ -29,20 +33,19 @@ This MVP focuses on essential features to validate the concept, with plans for f
 - **User Authentication**:
 
   - Secure registration and login system using session management (`express-session`) and password hashing with `bcrypt`.
-  - Role-based access for Buyers, Sellers, and Admins.
+  - Role-based access for Students and Instructors.
   - Token-based integration with Stripe using `jsonwebtoken` for customer management.
 
 - **Role-Based Access**:
 
-  - **Buyer**: Browse courses, purchase courses via Stripe, and view purchased courses.
-  - **Seller**: Create courses (linked via `userId` in `Courses`).
-  - **Admin**: Perform basic CRUD operations on courses (create and delete).
+  - **Student**: Browse courses, purchase courses via Stripe, and view purchased courses.
+  - **Instructor**: Create courses (linked via `userId` in `Courses`).
 
 - **Course Management**:
 
   - Browse courses and view course details.
-  - Purchase courses using Stripe (for Buyers).
-  - Admin can add and delete courses through a simple interface.
+  - Purchase courses using Stripe (for Students).
+  - Instructors can add courses through a simple interface.
 
 - **Payment Integration**:
 
@@ -66,7 +69,6 @@ This MVP focuses on essential features to validate the concept, with plans for f
 - **express-session**: For session management.
 - **jsonwebtoken (JWT)**: For token-based authentication with Stripe.
 - **easyinvoice**: For generating PDF invoices after purchases.
-- **pdf-node**: For generating PDF documents (not used in MVP but included for future enhancements).
 - **stripe**: For payment processing and customer management.
 - **dotenv**: For managing environment variables (e.g., Stripe and EasyInvoice credentials).
 
@@ -85,18 +87,25 @@ This MVP focuses on essential features to validate the concept, with plans for f
 
 The project uses the following tables with their relationships:
 
-- **Users**: Stores user data (`id`, `username`, `email`, `password`, `role`).
+- **Users**: Stores user data (`id`, `username`, `email`, `password`, `role` where `role` is either `student` or `instructor`).
 - **Courses**: Stores course data (`id`, `name`, `description`, `price`, `userId`).
-- **UserCourses**: Junction table for **Many-to-Many** relationship between `Users` (Buyers) and `Courses` (purchases), with `stripePaymentId` to track payments.
+- **UserCourses**: Junction table for **Many-to-Many** relationship between `Users` (Students) and `Courses` (purchases), with `stripePaymentId` to track payments.
+- **Categories**: Stores category data (`id`, `name`).
+- **CourseCategories**: Junction table for **Many-to-Many** relationship between `Courses` and `Categories`.
+- **Lessons**: Stores lesson data (`id`, `title`, `content`, `courseId`).
+- **UserProfiles**: Stores user profile data (`id`, `fullName`, `phone`, `userId`).
 
 ### Relationships
 
-- **One-to-Many**: `Users` → `Courses` (via `userId` in `Courses`).
-- **Many-to-Many**: `Users` ↔ `Courses` (via `UserCourses`).
+- **One-to-Many**: `Users` → `Courses` (via `userId` in `Courses` where `userId` links to an Instructor).
+- **Many-to-Many**: `Users` ↔ `Courses` (via `UserCourses` for student purchases).
+- **Many-to-Many**: `Courses` ↔ `Categories` (via `CourseCategories`).
+- **One-to-Many**: `Courses` → `Lessons` (via `courseId` in `Lessons`).
+- **One-to-One**: `Users` → `UserProfiles` (via `userId` in `UserProfiles`).
 
 Below is the ERD for the Knowlytics database:
 
-![Knowlytics ERD](https://github.com/your-username/knowlytics/raw/main/images/erd.png)
+![Knowlytics ERD](https://drive.google.com/u/0/drive-viewer/AKGpihaeGL60c9CG-c7-QkQTzN_7L_fxOWvTnf7qOTQ28LHWMo_ZN0euC0X5Q9vnmCwRzC8lRsfBamJlTtco1l1stFA0sjLxks92iQ=s1600-rw-v1)
 
 ---
 
@@ -110,12 +119,21 @@ knowlytics/
 ├── data/
 │   ├── users.json            # Seed data for Users
 │   ├── courses.json          # Seed data for Courses
-│   └── userCourses.json      # Seed data for UserCourses
+│   ├── categories.json       # Seed data for Categories
+│   ├── lessons.json          # Seed data for Lessons
+│   ├── userCourses.json      # Seed data for UserCourses
+│   ├── courseCategories.json # Seed data for CourseCategories
+│   └── userProfiles.json     # Seed data for UserProfiles
 ├── migrations/               # Sequelize migrations
 ├── models/                   # Sequelize models
 │   ├── index.js
 │   ├── user.js
-│   └── course.js
+│   ├── course.js
+│   ├── category.js
+│   ├── lesson.js
+│   ├── userProfile.js
+│   ├── userCourse.js
+│   └── courseCategory.js
 ├── seeders/                  # Sequelize seeders
 ├── controllers/
 │   └── controller.js         # All controller logic
@@ -128,12 +146,12 @@ knowlytics/
 │   ├── courses.ejs          # List of courses
 │   ├── courseDetail.ejs     # Course detail page
 │   ├── myCourses.ejs        # List of purchased courses
-│   └── admin/
-│       ├── courses.ejs      # Admin course management
+│   └── instructor/
+│       ├── courses.ejs      # Instructor course management
 │       └── addCourse.ejs    # Form to add a course
 ├── routes/
 │   ├── index.js             # Routes for user-related functionality
-│   └── adminRouter.js       # Routes for admin-related functionality
+│   └── instructorRouter.js  # Routes for instructor-related functionality
 ├── invoices/                # Folder for generated invoices
 ├── .env                     # Environment variables (e.g., Stripe credentials)
 ├── .gitignore               # Git ignore file
@@ -180,13 +198,12 @@ Follow these steps to set up and run Knowlytics MVP on your local machine:
    - `sequelize`
    - `pg` (PostgreSQL driver)
    - `express-session`
-   - `bcrypt`
+   - `bcryptjs`
    - `jsonwebtoken`
    - `ejs`
-   - `easyinvoice` (for invoice generation)
-   - `pdf-node` (for PDF generation, not used in MVP)
-   - `stripe` (for payment processing)
-   - `dotenv` (for environment variables)
+   - `easyinvoice`
+   - `stripe`
+   - `dotenv`
 
 3. **Setup PostgreSQL Database**:
 
@@ -233,7 +250,7 @@ Follow these steps to set up and run Knowlytics MVP on your local machine:
      ```
    - Replace `your-stripe-secret-key` with your Stripe secret key (obtainable from the Stripe Dashboard).
    - Replace `your-easyinvoice-api-key` with your EasyInvoice API key (obtainable after registering at EasyInvoice).
-   - Ensure `.env` is added to `.gitignore` to prevent it from being uploaded to GitHub:
+   - Ensure `.env` is added to `.gitignore`:
      ```gitignore
      node_modules/
      .env
@@ -242,37 +259,42 @@ Follow these steps to set up and run Knowlytics MVP on your local machine:
 
 5. **Setup Stripe and EasyInvoice**:
 
-   - **Stripe**: Register for a Stripe account at [Stripe](https://stripe.com/) to get your `STRIPE_SECRET_KEY`. You can use Stripe's test mode for development.
-   - **EasyInvoice**: Register for an EasyInvoice account at [EasyInvoice](https://app.budgetinvoice.com/register) to get your `EASYINVOICE_API_KEY`. The free tier allows up to 25 invoices per 15 days.
+   - **Stripe**: Register for a Stripe account at [Stripe](https://stripe.com/) to get your `STRIPE_SECRET_KEY`. Use test mode for development.
+   - **EasyInvoice**: Register at [EasyInvoice](https://app.budgetinvoice.com/register) to get your `EASYINVOICE_API_KEY`. The free tier allows up to 25 invoices per 15 days.
 
 6. **Run Migrations**:
-   Run the Sequelize migrations to create the necessary tables in your database:
 
    ```bash
    npx sequelize-cli db:migrate
    ```
 
-   This will create the following tables:
+   This will create the tables:
 
    - `Users`
    - `Courses`
+   - `Categories`
    - `UserCourses`
+   - `CourseCategories`
+   - `Lessons`
+   - `UserProfiles`
 
 7. **Run Seeders**:
-   Populate the database with sample data using the seeders:
 
    ```bash
    npx sequelize-cli db:seed:all
    ```
 
-   This will populate the database with:
+   This will populate the database with sample data for:
 
-   - Users (with roles: `buyer`, `seller`, `admin`)
+   - Users (with roles: `student`, `instructor`)
    - Courses
-   - Purchase history (UserCourses)
+   - Categories
+   - Lessons
+   - UserCourses
+   - CourseCategories
+   - UserProfiles
 
 8. **(Optional) Setup Tailwind CSS Locally**:
-   If you prefer to use Tailwind CSS locally instead of the CDN:
 
    ```bash
    npm install -D tailwindcss postcss autoprefixer
@@ -312,7 +334,6 @@ Follow these steps to set up and run Knowlytics MVP on your local machine:
    ```
 
 9. **Run the Application**:
-   Start the application:
 
    ```bash
    node app.js
@@ -326,27 +347,24 @@ Follow these steps to set up and run Knowlytics MVP on your local machine:
 
 1. **Register and Login**:
 
-   - Visit `http://localhost:3000/register` to create an account (choose role: `buyer` or `seller`).
+   - Visit `http://localhost:3000/register` to create an account (choose role: `student` or `instructor`).
    - Login at `http://localhost:3000/login`.
-   - Admin account can be accessed using:
-     - **Email**: `admin1@example.com`
-     - **Password**: `admin12345`
 
 2. **Browse and Purchase Courses**:
 
    - Go to `http://localhost:3000/courses` to browse available courses.
    - Click "View Details" to see course information.
-   - Buyers can purchase a course via Stripe. **Note**: The current implementation simulates payment by directly creating a Payment Intent. For a full payment flow, integrate Stripe Elements in the frontend to collect payment details.
-   - After a successful purchase, an invoice will be generated using EasyInvoice and saved in the `invoices/` folder.
+   - Students can purchase a course via Stripe by clicking "Daftar Sekarang" on the course detail page.
+   - After a successful purchase, an invoice will be generated and saved in the `invoices/` folder.
 
 3. **View Purchased Courses**:
 
-   - Buyers can see their purchased courses at `http://localhost:3000/my-courses`.
+   - Students can see their purchased courses at `http://localhost:3000/my-courses`.
 
-4. **Admin Dashboard**:
-   - Admins can manage courses at `http://localhost:3000/admin/courses`.
-   - Add new courses via `http://localhost:3000/admin/courses/add`.
-   - Delete courses directly from the admin dashboard.
+4. **Instructor Dashboard**:
+
+   - Instructors can manage courses at `http://localhost:3000/instructor/courses`.
+   - Add new courses via `http://localhost:3000/instructor/courses/add`.
 
 ---
 
@@ -361,9 +379,21 @@ npx sequelize-cli init
 # Create Models and Migrations
 npx sequelize-cli model:generate --name User --attributes "username:string,email:string,password:string,role:string"
 npx sequelize-cli model:generate --name Course --attributes "name:string,description:string,price:integer,userId:integer"
+npx sequelize-cli model:generate --name Category --attributes "name:string"
+npx sequelize-cli model:generate --name Lesson --attributes "title:string,content:string,courseId:integer"
+npx sequelize-cli model:generate --name UserProfile --attributes "fullName:string,phone:string,userId:integer"
 
 # Create Junction Tables
 npx sequelize-cli migration:generate --name create-user-courses
+npx sequelize-cli migration:generate --name create-course-category
+
+# Add Foreign Key Constraints
+npx sequelize-cli migration:generate --name add-fk-constraint-to-userCourses-userId
+npx sequelize-cli migration:generate --name add-fk-constraint-to-userCourses-courseId
+npx sequelize-cli migration:generate --name add-fk-constraint-to-courseCategories-courseId
+npx sequelize-cli migration:generate --name add-fk-constraint-to-courseCategories-categoryId
+npx sequelize-cli migration:generate --name add-fk-constraint-to-userProfiles-userId
+npx sequelize-cli migration:generate --name add-fk-constraint-to-lessons-courseId
 
 # Run Migrations
 npx sequelize-cli db:migrate
@@ -398,3 +428,25 @@ For any inquiries, please contact:
 
 - **Fadhal** (fadhal.kerja@gmail.com)
 - **Iqbal** (iqbalfarhan13@yahoo.com)
+
+---
+
+### Key Updates:
+
+1. **Database Schema (ERD)**:
+
+   - Added `Categories`, `CourseCategories`, `Lessons`, and `UserProfiles` tables based on the migration and seeder files.
+   - Updated relationships to include the new tables, such as the Many-to-Many relationship between `Courses` and `Categories` via `CourseCategories`, One-to-Many between `Courses` and `Lessons`, and One-to-One between `Users` and `UserProfiles`.
+
+2. **Project Structure**:
+
+   - Added `categories.json`, `lessons.json`, `courseCategories.json`, and `userProfiles.json` to the `data/` folder to reflect the seeders.
+   - Added corresponding model files (`category.js`, `lesson.js`, `userProfile.js`, `userCourse.js`, `courseCategory.js`) to the `models/` folder.
+
+3. **Sequelize CLI Commands**:
+
+   - Updated to include commands for generating the `Category`, `Lesson`, and `UserProfile` models, as well as the `CourseCategories` junction table.
+   - Added commands for creating foreign key constraints as seen in the migration files.
+
+4. **Installation**:
+   - Updated the migration and seeder steps to include the new tables (`Categories`, `CourseCategories`, `Lessons`, `UserProfiles`).
