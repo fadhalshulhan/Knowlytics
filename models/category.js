@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "name is required."
+          msg: "Nama kategori wajib diisi."
         },
         notNull: {
-          msg: "name is required."
+          msg: "Nama kategori tidak boleh kosong."
         },
       }
     },

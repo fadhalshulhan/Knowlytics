@@ -1,52 +1,77 @@
 [
   {
     "name": "Pemrograman Web",
-    "description": "Kursus ini mengajarkan dasar-dasar pemrograman web.",
+    "description": "Kursus ini mengajarkan dasar-dasar pemrograman web mulai dari HTML, CSS, hingga JavaScript untuk membangun situs web interaktif.",
     "duration": 30
   },
   {
     "name": "Keamanan Siber",
-    "description": "Kursus ini mengajarkan dasar-dasar keamanan siber.",
+    "description": "Kursus ini memperkenalkan konsep keamanan siber, termasuk cara melindungi sistem dari serangan dan memahami ancaman digital.",
     "duration": 40
   },
   {
     "name": "Desain UI/UX untuk Pemula",
-    "description": "Belajar mendesain antarmuka pengguna yang menarik.",
+    "description": "Belajar mendesain antarmuka pengguna yang menarik dan ramah pengguna dengan prinsip dasar UI/UX serta alat seperti Figma.",
     "duration": 25
   },
   {
     "name": "Manajemen Basis Data",
-    "description": "Kursus tentang pengelolaan dan penggunaan database.",
+    "description": "Kursus ini membahas pengelolaan basis data, termasuk desain, query SQL, dan optimalisasi penyimpanan data.",
     "duration": 35
   },
   {
     "name": "Pengantar Kecerdasan Buatan",
-    "description": "Memahami dasar-dasar AI dan aplikasinya.",
+    "description": "Memahami dasar-dasar kecerdasan buatan, algoritma machine learning, dan aplikasinya dalam kehidupan sehari-hari.",
     "duration": 50
   },
   {
     "name": "Cloud Computing Dasar",
-    "description": "Pengenalan teknologi cloud dan penyedia layanan.",
+    "description": "Pengenalan teknologi cloud, layanan seperti AWS, dan cara mengelola infrastruktur berbasis cloud.",
     "duration": 45
   },
   {
     "name": "Pengembangan Aplikasi Mobile",
-    "description": "Belajar membuat aplikasi mobile dengan Flutter.",
+    "description": "Belajar membuat aplikasi mobile lintas platform menggunakan Flutter dan bahasa Dart.",
     "duration": 35
   },
   {
     "name": "Dasar Jaringan Komputer",
-    "description": "Memahami konsep dasar jaringan dan konfigurasi.",
+    "description": "Memahami konsep dasar jaringan komputer, konfigurasi perangkat, dan protokol komunikasi.",
     "duration": 30
   },
   {
     "name": "DevOps untuk Pemula",
-    "description": "Pengenalan DevOps dan alat-alatnya.",
+    "description": "Pengenalan DevOps, termasuk alat seperti Docker dan Jenkins untuk otomatisasi pengembangan dan deployment.",
     "duration": 40
   },
   {
     "name": "Analisis Data dengan Python",
-    "description": "Kursus untuk menganalisis dan memvisualisasikan data.",
+    "description": "Kursus untuk menganalisis dan memvisualisasikan data menggunakan Python serta library seperti Pandas dan Matplotlib.",
     "duration": 45
+  },
+  {
+    "name": "Pemrograman Backend dengan Node.js",
+    "description": "Belajar membangun aplikasi backend yang skalabel menggunakan Node.js, Express, dan MongoDB.",
+    "duration": 35
+  },
+  {
+    "name": "Pengembangan Game 2D",
+    "description": "Kursus ini mengajarkan cara membuat game 2D sederhana menggunakan Unity dan C#.",
+    "duration": 40
+  },
+  {
+    "name": "Internet of Things (IoT)",
+    "description": "Pengenalan IoT, cara menghubungkan perangkat fisik ke internet, dan membangun proyek sederhana.",
+    "duration": 30
+  },
+  {
+    "name": "Pemrograman Fungsional",
+    "description": "Memahami paradigma pemrograman fungsional menggunakan Haskell dan JavaScript.",
+    "duration": 35
+  },
+  {
+    "name": "Blockchain Dasar",
+    "description": "Kursus pengantar teknologi blockchain, konsep desentralisasi, dan cara kerja cryptocurrency.",
+    "duration": 50
   }
 ]

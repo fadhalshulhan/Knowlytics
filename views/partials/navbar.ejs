@@ -1,31 +1,31 @@
-<nav class="bg-blue-600 p-6 shadow-md sticky top-0 z-10">
+<nav class="bg-blue-600 p-4 shadow-md sticky top-0 z-10">
   <div class="container mx-auto flex justify-between items-center">
     <a
       href="/"
-      class="text-white text-xl font-bold hover:text-gray-200 transition duration-200"
+      class="text-white text-2xl font-bold hover:text-gray-200 transition"
       >Knowlytics</a
     >
-    <div class="space-x-6">
+    <div class="space-x-6 flex items-center">
       <% if (isLoggedIn) { %>
       <a
         href="/edit-profile"
-        class="text-white font-medium hover:text-gray-200 transition duration-200"
+        class="text-white font-medium hover:text-gray-200 transition"
         >Edit Profil</a
       >
       <a
         href="/logout"
-        class="text-white font-medium hover:text-gray-200 transition duration-200"
+        class="text-white font-medium hover:text-gray-200 transition"
         >Keluar</a
       >
       <% } else { %>
       <a
         href="/login"
-        class="text-white font-medium hover:text-gray-200 transition duration-200"
+        class="text-white font-medium hover:text-gray-200 transition"
         >Masuk</a
       >
       <a
         href="/register"
-        class="text-white font-medium hover:text-gray-200 transition duration-200"
+        class="bg-white text-blue-500 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition"
         >Daftar</a
       >
       <% } %>

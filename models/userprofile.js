@@ -14,14 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         notEmpty: {
-          msg: 'User ID cannot be empty'
+          msg: 'ID pengguna wajib diisi.'
         },
         notNull: {
-          msg: 'User ID is required'
+          msg: 'ID pengguna harus berupa angka.'
         },
-        isInt: {
-          msg: "Number only."
-        }
       }
     },
     fullName: {
@@ -29,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'Full name cannot be empty'
+          msg: 'Nama lengkap wajib diisi.'
         },
         notNull: {
-          msg: 'Full name is required'
+          msg: 'Nama lengkap tidak boleh kosong.'
         }
       }
     },
@@ -40,12 +37,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: 'Phone number cannot be empty' },
-        notNull: { msg: 'Phone number is required' },
-        len: { args: [10, 15], msg: 'Phone number must be between 10 and 15 characters' },
+        notEmpty: { msg: 'Nomor telepon wajib diisi.' },
+        notNull: { msg: 'Nomor telepon tidak boleh kosong.' },
+        len: { args: [10, 15], msg: 'Nomor telepon harus terdiri dari 10-15 karakter.' },
         isValidPhone(value) {
           if (!/^\+?[0-9]{10,15}$/.test(value)) {
-            throw new Error('Phone number must contain only digits and an optional leading "+"');
+            throw new Error('Nomor telepon hanya boleh berisi angka dan tanda ' + ' di awal (opsional).');
           }
         }
       }

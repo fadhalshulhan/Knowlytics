@@ -4,58 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Masuk ke Knowlytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 min-h-screen flex flex-col">
-    <!-- Navbar -->
-    <nav class="bg-blue-600 p-4 shadow-md">
-      <div class="container mx-auto flex justify-between items-center">
-        <a
-          href="/"
-          class="text-white text-xl font-bold hover:text-gray-200 transition duration-200"
-          >Knowlytics</a
-        >
-        <div class="space-x-4">
-          <% if (isLoggedIn) { %>
-          <a
-            href="/edit-profile"
-            class="text-white hover:text-gray-200 transition duration-200"
-            >Edit Profil</a
-          >
-          <a
-            href="/logout"
-            class="text-white hover:text-gray-200 transition duration-200"
-            >Keluar</a
-          >
-          <% } else { %>
-          <a
-            href="/login"
-            class="text-white hover:text-gray-200 transition duration-200"
-            >Masuk</a
-          >
-          <a
-            href="/register"
-            class="text-white hover:text-gray-200 transition duration-200"
-            >Daftar</a
-          >
-          <% } %>
-        </div>
-      </div>
-    </nav>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <%- include('partials/navbar') %>
 
-    <!-- Konten Utama -->
     <div class="flex-grow flex items-center justify-center py-12">
-      <div class="w-full max-w-md p-8 bg-white rounded-xl shadow-lg">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Masuk ke Akun Anda
+      <div class="w-full max-w-md p-8 bg-white rounded-xl shadow-md">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2 text-center">
+          Masuk ke Knowlytics
         </h1>
+        <p class="text-gray-600 mb-6 text-center">
+          Lanjutkan belajarmu sekarang!
+        </p>
         <% if (success) { %>
         <div class="bg-green-100 text-green-700 p-3 rounded-lg mb-4">
           <%= success %>
@@ -75,8 +49,8 @@
               name="email"
               id="email"
               value="<%= formData.email || '' %>"
-              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors.email ? 'border-red-500' : '' %>"
-              placeholder="Masukkan email Anda"
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Emailmu"
             />
             <% if (errors.email) { %>
             <p class="text-red-500 text-sm mt-1"><%= errors.email %></p>
@@ -91,8 +65,8 @@
                 type="password"
                 name="password"
                 id="password"
-                class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors.password ? 'border-red-500' : '' %>"
-                placeholder="Masukkan kata sandi"
+                class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Kata sandimu"
               />
               <button
                 type="button"
@@ -107,14 +81,14 @@
           </div>
           <button
             type="submit"
-            class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+            class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition"
           >
             Masuk Sekarang
           </button>
         </form>
         <p class="mt-4 text-center text-gray-600">
           Belum punya akun?
-          <a href="/register" class="text-blue-600 hover:underline"
+          <a href="/register" class="text-blue-500 hover:underline"
             >Daftar di sini</a
           >
         </p>
