@@ -69,7 +69,7 @@ class Controller {
     static async loginPage(req, res) {
         const isLoggedIn = !!req.session.userId;
         const errors = req.session.errors || {};
-        const error = req.session.error || req.query.error || null;
+        const error = req.session.error || null;
         const success = req.session.success || null;
         const formData = req.session.formData || {};
 
@@ -584,18 +584,37 @@ class Controller {
 
             const user = await User.findByPk(userId);
             if (!user) {
-                req.session.error = 'User not found.';
                 return res.redirect('/login');
             }
 
             const userName = user.username;
             await user.destroy();
 
-            req.session.success = `User ${userName} deleted successfully.`;
-            res.redirect('/login');
+            const successMessage = `User ${userName} deleted successfully.`;
+
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error('Error destroying session:', err);
+                    return res.redirect('/login');
+                }
+                res.render('login', {
+                    error: null,
+                    errors: {},
+                    success: successMessage,
+                    isLoggedIn: false,
+                    formData: {}
+                });
+            });
         } catch (error) {
-            req.session.error = error.message;
-            res.redirect('/login');
+            req.session.destroy(() => {
+                res.render('login', {
+                    error: error.message,
+                    errors: {},
+                    success: null,
+                    isLoggedIn: false,
+                    formData: {}
+                });
+            });
         }
     }
 }
