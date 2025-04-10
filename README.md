@@ -6,8 +6,6 @@ Berikut adalah `README.md` yang telah diperbarui:
 
 # Knowlytics MVP
 
-![Knowlytics Banner](https://via.placeholder.com/1200x300.png?text=Knowlytics+-+Minimal+EdTech+Platform)
-
 **Knowlytics MVP** is a minimal implementation of an Education Technology (EdTech) platform designed to demonstrate core functionality for online learning. Users can register as either students or instructors, log in, and browse courses. Students can purchase existing courses using Stripe, while instructors cannot create courses. Invoices are generated using EasyInvoice after each successful purchase, providing a seamless experience for tracking transactions.
 
 This MVP focuses on essential features to validate the concept, with plans for future enhancements like email notifications, file uploads, and additional analytics.
@@ -105,7 +103,7 @@ The project uses the following tables with their relationships:
 
 Below is the ERD for the Knowlytics database:
 
-![Knowlytics ERD](https://drive.google.com/u/0/drive-viewer/AKGpihaeGL60c9CG-c7-QkQTzN_7L_fxOWvTnf7qOTQ28LHWMo_ZN0euC0X5Q9vnmCwRzC8lRsfBamJlTtco1l1stFA0sjLxks92iQ=s1600-rw-v1)
+https://drive.google.com/u/0/drive-viewer/AKGpihaeGL60c9CG-c7-QkQTzN_7L_fxOWvTnf7qOTQ28LHWMo_ZN0euC0X5Q9vnmCwRzC8lRsfBamJlTtco1l1stFA0sjLxks92iQ=s1600-rw-v1
 
 ---
 
