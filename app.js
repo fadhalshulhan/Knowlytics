@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const routes = require('./routes');
-const flash = require('connect-flash')
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -24,13 +23,11 @@ app.use(session({
 }));
 app.use(routes);
 
-// Error handling global
 app.use((err, req, res, next) => {
     console.error('Global error:', err);
     res.status(500).json({ error: 'Terjadi kesalahan di server: ' + err.message });
 });
 
-// Tangani uncaught exceptions untuk mencegah server crash
 process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err);
 });
