@@ -1,0 +1,58 @@
+[
+  {
+    "courseId": 1,
+    "categoryId": 1
+  },
+  {
+    "courseId": 1,
+    "categoryId": 2
+  },
+  {
+    "courseId": 2,
+    "categoryId": 1
+  },
+  {
+    "courseId": 3,
+    "categoryId": 3
+  },
+  {
+    "courseId": 3,
+    "categoryId": 1
+  },
+  {
+    "courseId": 4,
+    "categoryId": 4
+  },
+  {
+    "courseId": 5,
+    "categoryId": 5
+  },
+  {
+    "courseId": 6,
+    "categoryId": 6
+  },
+  {
+    "courseId": 7,
+    "categoryId": 7
+  },
+  {
+    "courseId": 7,
+    "categoryId": 2
+  },
+  {
+    "courseId": 8,
+    "categoryId": 8
+  },
+  {
+    "courseId": 9,
+    "categoryId": 9
+  },
+  {
+    "courseId": 10,
+    "categoryId": 10
+  },
+  {
+    "courseId": 10,
+    "categoryId": 1
+  }
+]

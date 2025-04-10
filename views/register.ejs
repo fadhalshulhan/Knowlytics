@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar di Knowlytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4 shadow-md">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-white text-xl font-bold hover:text-gray-200 transition duration-200">Knowlytics</a>
+        <div class="space-x-4">
+          <% if (isLoggedIn) { %>
+            <a href="/edit-profile" class="text-white hover:text-gray-200 transition duration-200">Edit Profil</a>
+            <a href="/logout" class="text-white hover:text-gray-200 transition duration-200">Keluar</a>
+          <% } else { %>
+            <a href="/login" class="text-white hover:text-gray-200 transition duration-200">Masuk</a>
+            <a href="/register" class="text-white hover:text-gray-200 transition duration-200">Daftar</a>
+          <% } %>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <div class="flex-grow flex items-center justify-center py-12">
+      <div class="w-full max-w-lg p-8 bg-white rounded-xl shadow-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Daftar Sekarang</h1>
+        <% if (error) { %>
+          <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-6 text-center"><%= error %></div>
+        <% } %>
+        <form action="/register" method="POST" class="space-y-6">
+          <div>
+            <label for="username" class="block text-gray-700 font-medium">Nama Pengguna</label>
+            <input type="text" name="username" id="username" value="<%= formData.username || '' %>" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors.username ? 'border-red-500' : '' %>" placeholder="Buat nama pengguna Anda" />
+            <% if (errors.username) { %>
+              <p class="text-red-500 text-sm mt-1"><%= errors.username %></p>
+            <% } %>
+          </div>
+          <div>
+            <label for="email" class="block text-gray-700 font-medium">Email</label>
+            <input type="email" name="email" id="email" value="<%= formData.email || '' %>" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors.email ? 'border-red-500' : '' %>" placeholder="Masukkan email Anda" />
+            <% if (errors.email) { %>
+              <p class="text-red-500 text-sm mt-1"><%= errors.email %></p>
+            <% } %>
+          </div>
+          <div>
+            <label for="password" class="block text-gray-700 font-medium">Kata Sandi</label>
+            <div class="relative">
+              <input type="password" name="password" id="password" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors.password ? 'border-red-500' : '' %>" placeholder="Buat kata sandi yang aman" />
+              <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700">
+                <span class="material-symbols-outlined">visibility_off</span>
+              </button>
+            </div>
+            <% if (errors.password) { %>
+              <p class="text-red-500 text-sm mt-1"><%= errors.password %></p>
+            <% } %>
+          </div>
+          <div>
+            <label for="role" class="block text-gray-700 font-medium">Peran</label>
+            <select name="role" id="role" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors.role ? 'border-red-500' : '' %>">
+              <option value="">Pilih peran Anda</option>
+              <option value="student" <%= formData.role === 'student' ? 'selected' : '' %>>Pelajar</option>
+              <option value="instructor" <%= formData.role === 'instructor' ? 'selected' : '' %>>Instruktur</option>
+            </select>
+            <% if (errors.role) { %>
+              <p class="text-red-500 text-sm mt-1"><%= errors.role %></p>
+            <% } %>
+          </div>
+          <div>
+            <label for="fullName" class="block text-gray-700 font-medium">Nama Lengkap</label>
+            <input type="text" name="fullName" id="fullName" value="<%= formData.fullName || '' %>" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors.fullname ? 'border-red-500' : '' %>" placeholder="Masukkan nama lengkap Anda" />
+            <% if (errors.fullname) { %>
+              <p class="text-red-500 text-sm mt-1"><%= errors.fullname %></p>
+            <% } %>
+          </div>
+          <div>
+            <label for="phone" class="block text-gray-700 font-medium">Nomor Telepon</label>
+            <input type="text" name="phone" id="phone" value="<%= formData.phone || '' %>" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors.phone ? 'border-red-500' : '' %>" placeholder="Masukkan nomor telepon Anda" />
+            <% if (errors.phone) { %>
+              <p class="text-red-500 text-sm mt-1"><%= errors.phone %></p>
+            <% } %>
+          </div>
+          <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">Daftar Sekarang</button>
+        </form>
+        <p class="mt-6 text-center text-gray-600">
+          Sudah punya akun? <a href="/login" class="text-blue-600 hover:underline">Masuk di sini</a>
+        </p>
+      </div>
+    </div>
+    <script src="/helpers/togglePassword.js"></script>
+  </body>
+</html>

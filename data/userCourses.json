@@ -1,0 +1,7 @@
+[
+  {
+    "userId": 2,
+    "courseId": 1,
+    "stripePaymentId": "pi_123456789"
+  }
+]

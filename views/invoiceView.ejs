@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Pembayaran</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar sederhana -->
+    <nav class="bg-blue-600 text-white p-4">
+      <div class="container mx-auto">
+        <a href="/" class="font-bold text-xl">Knowlytics</a>
+        <!-- Tambahkan link navbar lain jika perlu -->
+      </div>
+    </nav>
+
+    <div class="container mx-auto mt-8 p-4 bg-white rounded shadow">
+      <h1 class="text-2xl font-bold mb-4">Invoice Pembayaran</h1>
+      <p class="mb-4">Payment ID: <%= paymentId %></p>
+      <!-- Tampilkan PDF invoice via iframe -->
+      <iframe
+        src="<%= invoicePath %>"
+        class="w-full h-screen"
+        frameborder="0"
+      ></iframe>
+    </div>
+  </body>
+</html>

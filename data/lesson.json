@@ -1,0 +1,82 @@
+[
+  {
+    "title": "HTML Dasar",
+    "content": "Pengenalan tag HTML...",
+    "courseId": 1
+  },
+  {
+    "title": "CSS Dasar",
+    "content": "Pengenalan selector CSS...",
+    "courseId": 1
+  },
+  {
+    "title": "Pengenalan Keamanan Siber",
+    "content": "Dasar-dasar keamanan jaringan...",
+    "courseId": 2
+  },
+  {
+    "title": "Dasar-Dasar UI Design",
+    "content": "Prinsip desain antarmuka pengguna...",
+    "courseId": 3
+  },
+  {
+    "title": "Wireframing dengan Figma",
+    "content": "Cara membuat wireframe menggunakan Figma...",
+    "courseId": 3
+  },
+  {
+    "title": "SQL Dasar",
+    "content": "Pengenalan query SQL untuk database...",
+    "courseId": 4
+  },
+  {
+    "title": "Machine Learning Dasar",
+    "content": "Konsep dasar kecerdasan buatan dan ML...",
+    "courseId": 5
+  },
+  {
+    "title": "Pengenalan AWS",
+    "content": "Dasar-dasar layanan cloud dengan AWS...",
+    "courseId": 6
+  },
+  {
+    "title": "Flutter untuk Pemula",
+    "content": "Membangun aplikasi mobile dengan Flutter...",
+    "courseId": 7
+  },
+  {
+    "title": "Dart Dasar",
+    "content": "Pengenalan bahasa pemrograman Dart...",
+    "courseId": 7
+  },
+  {
+    "title": "Konfigurasi Router",
+    "content": "Cara mengatur router untuk jaringan...",
+    "courseId": 8
+  },
+  {
+    "title": "Protokol Jaringan",
+    "content": "Memahami TCP/IP dan protokol lainnya...",
+    "courseId": 8
+  },
+  {
+    "title": "CI/CD dengan Jenkins",
+    "content": "Automasi deployment dengan Jenkins...",
+    "courseId": 9
+  },
+  {
+    "title": "Docker Dasar",
+    "content": "Pengenalan container dengan Docker...",
+    "courseId": 9
+  },
+  {
+    "title": "Python untuk Analisis Data",
+    "content": "Menggunakan Python untuk analisis data...",
+    "courseId": 10
+  },
+  {
+    "title": "Visualisasi Data",
+    "content": "Membuat grafik dengan Matplotlib...",
+    "courseId": 10
+  }
+]
