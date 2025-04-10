@@ -1,5 +1,4 @@
 const { User, Course, Category, UserCourse, Lesson, UserProfile, sequelize } = require('../models');
-const bcrypt = require('bcryptjs');
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // Muat dari .env
 const { formatDate } = require('../helpers/helper');

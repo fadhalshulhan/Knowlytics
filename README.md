@@ -1,6 +1,6 @@
 # Knowlytics MVP
 
-**Knowlytics MVP** is a minimal implementation of an Education Technology (EdTech) platform designed to demonstrate core functionality for online learning. Users can register as either students or instructors, log in, and browse courses. Students can purchase existing courses using Stripe, while instructors cannot create courses. Invoices are generated using EasyInvoice after each successful purchase, providing a seamless experience for tracking transactions.
+**Knowlytics MVP** is a minimal implementation of an Education Technology (EdTech) platform designed to demonstrate core functionality for online learning. Users can register as either students or instructors, log in, and browse courses. Students can purchase existing courses using Stripe, while instructors cannot create courses at this time. Invoices are generated using PDFKit after each successful purchase, providing a seamless experience for tracking transactions.
 
 This MVP focuses on essential features to validate the concept, with plans for future enhancements like email notifications, file uploads, and additional analytics.
 
@@ -17,6 +17,7 @@ This MVP focuses on essential features to validate the concept, with plans for f
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
+- [Key Updates](#key-updates)
 
 ---
 
@@ -31,13 +32,12 @@ This MVP focuses on essential features to validate the concept, with plans for f
 - **Role-Based Access**:
 
   - **Student**: Browse courses, purchase courses via Stripe, and view purchased courses.
-  - **Instructor**: Create courses (linked via `userId` in `Courses`).
+  - **Instructor**: Currently, instructors cannot create or manage courses (feature planned for future updates).
 
 - **Course Management**:
 
   - Browse courses and view course details.
   - Purchase courses using Stripe (for Students).
-  - Instructors can add courses through a simple interface.
 
 - **Payment Integration**:
 
@@ -45,7 +45,7 @@ This MVP focuses on essential features to validate the concept, with plans for f
   - Supports payment processing for course purchases.
 
 - **Invoice Generation**:
-  - Generates PDF invoices using EasyInvoice (`easyinvoice`) after successful purchases.
+  - Generates PDF invoices using PDFKit (`pdfkit`) after successful purchases.
   - Invoices are stored locally for record-keeping.
 
 ---
@@ -60,9 +60,9 @@ This MVP focuses on essential features to validate the concept, with plans for f
 - **bcrypt**: For secure password hashing.
 - **express-session**: For session management.
 - **jsonwebtoken (JWT)**: For token-based authentication with Stripe.
-- **easyinvoice**: For generating PDF invoices after purchases.
+- **pdfkit**: For generating PDF invoices after purchases.
 - **stripe**: For payment processing and customer management.
-- **dotenv**: For managing environment variables (e.g., Stripe and EasyInvoice credentials).
+- **dotenv**: For managing environment variables (e.g., Stripe credentials).
 
 ### Frontend
 
@@ -97,59 +97,61 @@ The project uses the following tables with their relationships:
 
 Below is the ERD for the Knowlytics database:
 
-![Knowlytics ERD](https://drive.google.com/u/0/drive-viewer/AKGpihaeGL60c9CG-c7-QkQTzN_7L_fxOWvTnf7qOTQ28LHWMo_ZN0euC0X5Q9vnmCwRzC8lRsfBamJlTtco1l1stFA0sjLxks92iQ=s1600-rw-v1)
+https://drive.google.com/u/0/drive-viewer/AKGpihaeGL60c9CG-c7-QkQTzN_7L_fxOWvTnf7qOTQ28LHWMo_ZN0euC0X5Q9vnmCwRzC8lRsfBamJlTtco1l1stFA0sjLxks92iQ=s1600-rw-v1
 
 ---
 
 ## Project Structure
 
+Based on the latest project directory, here’s the updated structure:
+
 ```
 knowlytics/
 ├── config/
-│   ├── config.json           # Database configuration for Sequelize
-│   └── stripe.js             # Stripe configuration
-├── data/
-│   ├── users.json            # Seed data for Users
-│   ├── courses.json          # Seed data for Courses
-│   ├── categories.json       # Seed data for Categories
-│   ├── lessons.json          # Seed data for Lessons
-│   ├── userCourses.json      # Seed data for UserCourses
-│   ├── courseCategories.json # Seed data for CourseCategories
-│   └── userProfiles.json     # Seed data for UserProfiles
-├── migrations/               # Sequelize migrations
-├── models/                   # Sequelize models
-│   ├── index.js
-│   ├── user.js
-│   ├── course.js
-│   ├── category.js
-│   ├── lesson.js
-│   ├── userProfile.js
-│   ├── userCourse.js
-│   └── courseCategory.js
-├── seeders/                  # Sequelize seeders
+│   └── config.json           # Database configuration for Sequelize
 ├── controllers/
 │   └── controller.js         # All controller logic
-├── views/
-│   ├── partials/
-│   │   └── navbar.ejs       # Navbar partial
-│   ├── landing.ejs          # Landing page
-│   ├── login.ejs            # Login page
-│   ├── register.ejs         # Register page
-│   ├── courses.ejs          # List of courses
-│   ├── courseDetail.ejs     # Course detail page
-│   ├── myCourses.ejs        # List of purchased courses
-│   └── instructor/
-│       ├── courses.ejs      # Instructor course management
-│       └── addCourse.ejs    # Form to add a course
+├── data/
+│   ├── categories.json       # Seed data for Categories
+│   ├── courseCategories.json # Seed data for CourseCategories
+│   ├── courses.json          # Seed data for Courses
+│   ├── lesson.json           # Seed data for Lessons
+│   ├── userCourses.json      # Seed data for UserCourses
+│   ├── userProfiles.json     # Seed data for UserProfiles
+│   └── users.json            # Seed data for Users
+├── helpers/
+├── migrations/               # Sequelize migrations
+├── models/
+│   ├── category.js           # Category model
+│   ├── course.js             # Course model
+│   ├── coursecategory.js     # CourseCategory model
+│   ├── index.js              # Sequelize model index
+│   ├── lesson.js             # Lesson model
+│   ├── user.js               # User model
+│   ├── usercourse.js         # UserCourse model
+│   └── userprofile.js        # UserProfile model
+├── node_modules/             # Node.js dependencies
+├── public/
+│   └── payment.js            # Client-side payment logic
 ├── routes/
-│   ├── index.js             # Routes for user-related functionality
-│   └── instructorRouter.js  # Routes for instructor-related functionality
-├── invoices/                # Folder for generated invoices
-├── .env                     # Environment variables (e.g., Stripe credentials)
-├── .gitignore               # Git ignore file
-├── app.js                   # Main application file
-├── package.json             # Project dependencies and scripts
-└── README.md                # Project documentation
+├── seeders/                  # Sequelize seeders
+├── sessions/                 # Session storage
+├── views/
+│   ├── courseDetail.ejs      # Course detail page
+│   ├── editProfile.ejs       # Edit profile page
+│   ├── invoiceView.ejs       # Invoice view page
+│   ├── landing.ejs           # Landing page
+│   ├── login.ejs             # Login page
+│   ├── payment.ejs           # Payment page
+│   ├── register.ejs          # Register page
+│   └── env                   # Environment-specific views (if any)
+├── .gitignore                # Git ignore file
+├── app.js                    # Main application file
+├── knowlyticsdb.scheme.drawio.png # Database schema diagram
+├── LICENSE                   # License file
+├── package-lock.json         # Dependency lock file
+├── package.json              # Project dependencies and scripts
+└── README.md                 # Project documentation
 ```
 
 ---
@@ -163,7 +165,6 @@ Before setting up Knowlytics MVP, ensure you have the following installed:
 - **npm** (v6 or higher): Included with Node.js installation
 - **Git**: [Download Git](https://git-scm.com/downloads) (for cloning the repository)
 - **Stripe Account**: Register at [Stripe](https://stripe.com/) to obtain your `STRIPE_SECRET_KEY`.
-- **EasyInvoice Account**: Register at [EasyInvoice](https://app.budgetinvoice.com/register) to obtain your `EASYINVOICE_API_KEY`.
 
 ---
 
@@ -193,7 +194,7 @@ Follow these steps to set up and run Knowlytics MVP on your local machine:
    - `bcryptjs`
    - `jsonwebtoken`
    - `ejs`
-   - `easyinvoice`
+   - `pdfkit`
    - `stripe`
    - `dotenv`
 
@@ -238,21 +239,19 @@ Follow these steps to set up and run Knowlytics MVP on your local machine:
    - Create a `.env` file in the root directory and add your credentials:
      ```env
      STRIPE_SECRET_KEY=your-stripe-secret-key
-     EASYINVOICE_API_KEY=your-easyinvoice-api-key
      ```
    - Replace `your-stripe-secret-key` with your Stripe secret key (obtainable from the Stripe Dashboard).
-   - Replace `your-easyinvoice-api-key` with your EasyInvoice API key (obtainable after registering at EasyInvoice).
    - Ensure `.env` is added to `.gitignore`:
      ```gitignore
      node_modules/
      .env
      invoices/
+     sessions/
      ```
 
-5. **Setup Stripe and EasyInvoice**:
+5. **Setup Stripe**:
 
-   - **Stripe**: Register for a Stripe account at [Stripe](https://stripe.com/) to get your `STRIPE_SECRET_KEY`. Use test mode for development.
-   - **EasyInvoice**: Register at [EasyInvoice](https://app.budgetinvoice.com/register) to get your `EASYINVOICE_API_KEY`. The free tier allows up to 25 invoices per 15 days.
+   - Register for a Stripe account at [Stripe](https://stripe.com/) to get your `STRIPE_SECRET_KEY`. Use test mode for development.
 
 6. **Run Migrations**:
 
@@ -353,11 +352,6 @@ Follow these steps to set up and run Knowlytics MVP on your local machine:
 
    - Students can see their purchased courses at `http://localhost:3000/my-courses`.
 
-4. **Instructor Dashboard**:
-
-   - Instructors can manage courses at `http://localhost:3000/instructor/courses`.
-   - Add new courses via `http://localhost:3000/instructor/courses/add`.
-
 ---
 
 ## Sequelize CLI Commands
@@ -423,7 +417,7 @@ For any inquiries, please contact:
 
 ---
 
-### Key Updates:
+## Key Updates
 
 1. **Database Schema (ERD)**:
 
@@ -434,6 +428,7 @@ For any inquiries, please contact:
 
    - Added `categories.json`, `lessons.json`, `courseCategories.json`, and `userProfiles.json` to the `data/` folder to reflect the seeders.
    - Added corresponding model files (`category.js`, `lesson.js`, `userProfile.js`, `userCourse.js`, `courseCategory.js`) to the `models/` folder.
+   - Updated the structure to reflect the latest directory, including the `public/` folder with `payment.js` and the `sessions/` folder for session storage.
 
 3. **Sequelize CLI Commands**:
 
@@ -441,4 +436,24 @@ For any inquiries, please contact:
    - Added commands for creating foreign key constraints as seen in the migration files.
 
 4. **Installation**:
+
    - Updated the migration and seeder steps to include the new tables (`Categories`, `CourseCategories`, `Lessons`, `UserProfiles`).
+   - Removed references to EasyInvoice and added `pdfkit` to the list of dependencies.
+
+5. **Invoice Generation**:
+
+   - Switched from EasyInvoice to PDFKit (`pdfkit`) for generating PDF invoices. This change simplifies the invoice generation process by removing the dependency on an external API and allows for more customizable PDF creation using `PDFDocument` from `pdfkit`.
+
+6. **Responsive Design for Invoice View**:
+   - Modified the `invoiceView.ejs` page to improve responsiveness:
+     - On larger screens (≥640px), the "Unduh Invoice" button is placed to the right of the "Lihat Invoice Pembayaran" title.
+     - On mobile screens (<640px), the "Unduh Invoice" button is placed below the paragraph "Ini adalah bukti pembayaranmu (ID: ...)" for better usability.
+
+---
+
+### Changes Made:
+
+**Features Section**:
+
+- Updated the "Role-Based Access" subsection to clarify that instructors cannot create or manage courses at this time.
+- Removed the "Instructors can add courses through a simple interface" point from the "Course Management" subsection, as this functionality is not currently available.
