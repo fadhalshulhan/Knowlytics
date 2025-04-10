@@ -121,6 +121,13 @@ class Controller {
             const { username, email, password, role, fullName, phone } = req.body;
             const errors = {};
 
+            // Validasi manual: cek apakah email sudah terdaftar
+            const existingUser = await User.findOne({ where: { email } });
+            if (existingUser) {
+                errors.email = 'Email ini sudah terdaftar.';
+            }
+
+            // Validasi instance User
             try {
                 const userInstance = User.build({ username, email, password, role, isVerified: false });
                 await userInstance.validate();
@@ -135,6 +142,7 @@ class Controller {
                 }
             }
 
+            // Validasi instance UserProfile
             try {
                 const userProfileInstance = UserProfile.build({ userId: 0, fullName, phone });
                 await userProfileInstance.validate();
@@ -149,13 +157,14 @@ class Controller {
                 }
             }
 
+            // Jika ada error (termasuk email sudah terdaftar), hentikan proses dan redirect
             if (Object.keys(errors).length > 0) {
-                console.log('Validation Errors:', errors);
                 req.session.errors = errors;
                 req.session.formData = req.body;
                 return res.redirect('/register');
             }
 
+            // Hanya simpan user baru jika tidak ada error
             const user = await sequelize.transaction(async (t) => {
                 const newUser = await User.create(
                     { username, email, password, role, isVerified: false },
@@ -174,7 +183,6 @@ class Controller {
 
             res.redirect('/');
         } catch (error) {
-            console.log('Other Error:', error.message);
             req.session.error = error.message;
             req.session.formData = req.body;
             res.redirect('/register');

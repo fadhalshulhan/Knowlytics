@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
           result.error = { type: 'email', message: 'Email wajib diisi.' };
           return result;
         }
+
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           result.error = { type: 'email', message: 'Masukkan alamat email yang valid.' };
           return result;
@@ -95,8 +96,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Peran wajib diisi' },
-        notEmpty: { msg: 'Peran tidak boleh kosong' },
+        notNull: { msg: 'Peran wajib diisi.' },
+        notEmpty: { msg: 'Peran tidak boleh kosong.' },
       }
     },
     isVerified: {
