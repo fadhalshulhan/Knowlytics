@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     username: {
       type: DataTypes.STRING,
-      allowNull: false, // Changed from true to false to enforce requirement
+      allowNull: false,
       validate: {
         notNull: { msg: 'Nama pengguna wajib diisi.' },
         notEmpty: { msg: 'Nama pengguna tidak boleh kosong.' }
