@@ -32,10 +32,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Name is required."
+          msg: "Nama kursus wajib diisi."
         },
         notNull: {
-          msg: "Name is required."
+          msg: "Nama kursus tidak boleh kosong."
         }
       }
     },
@@ -45,10 +45,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Description is required."
+          msg: "Deskripsi kursus wajib diisi"
         },
         notNull: {
-          msg: "Description is required."
+          msg: "Deskripsi kursus tidak boleh kosong."
         }
       }
     },
@@ -58,13 +58,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Duration is required."
+          msg: "Durasi kursus wajib diisi."
         },
         notNull: {
-          msg: "Duration is required."
+          msg: "Durasi kursus tidak boleh kosong."
         },
         isInt: {
-          msg: "Number only."
+          msg: "Durasi kursus harus berupa angka."
         }
       }
     }

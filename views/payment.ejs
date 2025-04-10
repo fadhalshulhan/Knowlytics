@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pembayaran Kursus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .card-container {
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      .payment-card {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        padding: 24px;
+      }
+      .payment-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 8px;
+      }
+      .payment-price {
+        font-size: 1.125rem;
+        color: #4b5563;
+        margin-bottom: 24px;
+      }
+      .form-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+      }
+      #card-element {
+        background: #f9fafb;
+        min-height: 48px;
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+      }
+      #card-element:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        outline: none;
+      }
+      #submit {
+        background-color: #2563eb;
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      #submit:hover {
+        background-color: #1d4ed8;
+      }
+      #success-message {
+        display: none;
+        background-color: #10b981;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+      }
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid #ffffff;
+        border-top: 3px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="mx-auto px-4 py-8 card-container">
+      <div id="success-message" class="flex justify-between items-center mb-4">
+        <span
+          >Pembayaran sukses! Tunggu sebentar, kamu akan arahkan ke
+          invoice.</span
+        >
+        <div class="spinner"></div>
+      </div>
+
+      <div class="payment-card">
+        <h1 class="payment-title">Bayar Kursus: <%= course.name %></h1>
+        <p class="payment-price">Hanya $10.00 untuk mulai belajar!</p>
+
+        <div id="payment-form">
+          <div
+            id="payment-data"
+            data-payment="<%= JSON.stringify(paymentData || {}) %>"
+            data-stripe-key="<%= STRIPE_PUBLIC_KEY %>"
+            style="display: none"
+          ></div>
+          <div class="mb-6">
+            <label for="card-element" class="form-label"
+              >Detail Kartu Kredit</label
+            >
+            <div id="card-element" class="w-full"></div>
+            <p class="text-gray-500 text-sm mt-2">
+              Gunakan kartu uji coba: 4242 4242 4242 4242, Exp: 12/25, CVC: 123
+            </p>
+          </div>
+          <button id="submit" class="w-full">Bayar Sekarang</button>
+          <p id="payment-message" class="text-red-500 mt-4 text-center"></p>
+        </div>
+      </div>
+    </div>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/js/payment.js"></script>
+  </body>
+</html>

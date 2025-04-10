@@ -1,32 +1,17 @@
 [
-  {
-    "name": "Teknologi"
-  },
-  {
-    "name": "Pemrograman"
-  },
-  {
-    "name": "Desain UI/UX"
-  },
-  {
-    "name": "Basis Data"
-  },
-  {
-    "name": "Kecerdasan Buatan"
-  },
-  {
-    "name": "Cloud Computing"
-  },
-  {
-    "name": "Pengembangan Mobile"
-  },
-  {
-    "name": "Jaringan Komputer"
-  },
-  {
-    "name": "DevOps"
-  },
-  {
-    "name": "Analisis Data"
-  }
+  { "name": "Teknologi" },
+  { "name": "Pemrograman" },
+  { "name": "Desain UI/UX" },
+  { "name": "Basis Data" },
+  { "name": "Kecerdasan Buatan" },
+  { "name": "Cloud Computing" },
+  { "name": "Pengembangan Mobile" },
+  { "name": "Jaringan Komputer" },
+  { "name": "DevOps" },
+  { "name": "Analisis Data" },
+  { "name": "Backend Development" },
+  { "name": "Game Development" },
+  { "name": "Internet of Things" },
+  { "name": "Pemrograman Fungsional" },
+  { "name": "Blockchain" }
 ]

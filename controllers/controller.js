@@ -1,12 +1,11 @@
 const { User, Course, Category, UserCourse, Lesson, UserProfile, sequelize } = require('../models');
-const bcrypt = require('bcryptjs');
-const easyinvoice = require('easyinvoice');
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // Muat dari .env
 const { formatDate } = require('../helpers/helper');
 const { Op } = require('sequelize');
 const path = require('path');
-const fs = require('fs').promises;
+const fs = require('fs'); // Impor fs secara langsung
+const fsPromises = require('fs').promises; // Impor fs.promises untuk fungsi promise-based
 
 class Controller {
     static async landingPage(req, res) {
@@ -201,7 +200,6 @@ class Controller {
         }
     }
 
-
     static async paymentPage(req, res) {
         try {
             const { courseId } = req.query;
@@ -236,7 +234,7 @@ class Controller {
             const isLoggedIn = !!req.session.userId;
 
             // Kirim data ke view "paymentPage.ejs"
-            res.render('paymentPage', {
+            res.render('payment', {
                 STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
                 paymentData,
                 course,
@@ -245,7 +243,7 @@ class Controller {
                 formatDate
             });
         } catch (error) {
-            console.error("Error in paymentPage:", error);
+            console.error("Error in payment page:", error);
             res.status(500).send(`<p style="color:red;">Error: ${error.message}</p>`);
         }
     }
@@ -293,10 +291,6 @@ class Controller {
             res.status(500).send(`<p style="color:red">Terjadi error: ${error.message}</p>`);
         }
     }
-
-
-
-
 
     static async enrollCourse(req, res) {
         try {
@@ -356,6 +350,8 @@ class Controller {
                 throw new Error('Missing required fields: courseId, userId, and stripePaymentId are required');
             }
 
+            console.log("Memulai completeEnrollment untuk stripePaymentId:", stripePaymentId);
+
             // Cari user beserta profilnya
             const user = await User.findByPk(userId, {
                 include: [{ model: UserProfile }]
@@ -385,100 +381,114 @@ class Controller {
 
             // Pastikan folder invoices berada di level project root
             const invoiceDir = path.join(__dirname, '../invoices');
-            await fs.mkdir(invoiceDir, { recursive: true });
-
-            // Siapkan data untuk invoice
-            const invoiceNumber = `INV-${Date.now()}`;
-            const invoiceDate = new Date().toISOString().split('T')[0];
-            const dueDate = new Date();
-            dueDate.setDate(dueDate.getDate() + 15);
-            const dueDateStr = dueDate.toISOString().split('T')[0];
-
-            const invoiceData = {
-                apiKey: process.env.EASYINVOICE_API_KEY,
-                mode: "development",
-                customize: {
-                    template: "default"
-                },
-                sender: {
-                    company: "Knowlytics",
-                    address: "123 Main St",
-                    city: "City",
-                    country: "Country"
-                },
-                client: {
-                    company: user.UserProfile.fullName,
-                    address: "456 User St",
-                    city: "User City",
-                    country: "User Country"
-                },
-                information: {
-                    number: invoiceNumber,
-                    date: invoiceDate,
-                    dueDate: dueDateStr
-                },
-                products: [
-                    {
-                        quantity: 1,
-                        description: `Course: ${course.name}\nDescription: ${course.description}\nCategories: ${course.Categories.map(cat => cat.name).join(', ')}\nLesson Count: ${lessonCount}\nDuration: ${course.duration}\nCourse ID: ${courseId}\nUser ID: ${userId}\nPayment ID: ${stripePaymentId}`,
-                        price: 10.00,
-                        tax: 21
-                    }
-                ],
-                bottomNotice: "Kindly pay your invoice within 15 days.",
-                settings: {
-                    currency: "USD",
-                    taxNotation: "vat",
-                    marginTop: 50,
-                    marginRight: 50,
-                    marginLeft: 50,
-                    marginBottom: 25
-                }
-            };
+            console.log("Membuat folder invoices di:", invoiceDir);
+            await fsPromises.mkdir(invoiceDir, { recursive: true });
 
             // Tentukan path untuk invoice yang akan disimpan
             const invoicePath = path.join(invoiceDir, `invoice-${stripePaymentId}-custom.pdf`);
+            console.log("Menyimpan invoice di:", invoicePath);
 
-            let result;
-            try {
-                result = await easyinvoice.createInvoice(invoiceData);
-                await fs.writeFile(invoicePath, result.pdf, 'base64');
-            } catch (err) {
-                console.error("Gagal membuat invoice:", err);
-                throw new Error("Gagal membuat invoice. Pastikan API key dan data invoice valid.");
-            }
+            // Gunakan PDFKit untuk membuat invoice
+            const PDFDocument = require('pdfkit');
+            const doc = new PDFDocument();
+            const stream = fs.createWriteStream(invoicePath); // Gunakan fs.createWriteStream
+
+            doc.pipe(stream);
+
+            // Tambahkan konten ke PDF
+            doc.fontSize(20).text('Invoice', { align: 'center' });
+            doc.moveDown();
+            doc.fontSize(14).text(`Course: ${course.name}`);
+            doc.text(`Description: ${course.description || 'Tidak tersedia'}`);
+            doc.text(`Categories: ${course.Categories.map(cat => cat.name).join(', ') || 'Tidak tersedia'}`);
+            doc.text(`Lesson Count: ${lessonCount}`);
+            doc.text(`Duration: ${course.duration || 'Tidak tersedia'}`);
+            doc.text(`Course ID: ${courseId}`);
+            doc.text(`User ID: ${userId}`);
+            doc.text(`Payment ID: ${stripePaymentId}`);
+            doc.moveDown();
+            doc.text('Price: $10.00');
+            doc.text('Tax: 21%');
+            doc.text('Total: $12.10');
+            doc.moveDown();
+            doc.text('Kindly pay your invoice within 15 days.', { align: 'center' });
+
+            doc.end();
+
+            // Tunggu hingga file selesai ditulis
+            await new Promise((resolve, reject) => {
+                stream.on('finish', resolve);
+                stream.on('error', reject);
+            });
+
+            console.log("File invoice berhasil disimpan di:", invoicePath);
 
             res.json({
                 success: true,
                 invoicePath: `/invoices/invoice-${stripePaymentId}-custom.pdf`
             });
         } catch (error) {
-            console.error('Complete enrollment error:', error);
+            console.error('Complete enrollment error:', error.message);
             res.status(500).json({ error: error.message });
         }
     }
 
-
     static async invoiceView(req, res) {
         try {
             const { paymentId } = req.params;
+            const { download } = req.query; // Ambil parameter download dari query
             const invoicePath = path.join(__dirname, '../invoices', `invoice-${paymentId}-custom.pdf`);
 
-            // Pastikan file invoice ada
-            await fs.access(invoicePath);
+            // Pastikan file invoice ada menggunakan fsPromises.access
+            try {
+                await fsPromises.access(invoicePath, fsPromises.constants.F_OK);
+            } catch (err) {
+                throw new Error(`File invoice tidak ditemukan di path: ${invoicePath}`);
+            }
 
-            // Tampilkan file di invoiceView.ejs
-            res.render('invoiceView', { invoicePath, paymentId });
+            // Ambil data enrollment untuk mendapatkan courseId
+            const enrollment = await UserCourse.findOne({
+                where: { stripePaymentId: paymentId }
+            });
+            if (!enrollment) throw new Error('Enrollment tidak ditemukan untuk paymentId ini');
+
+            // Ambil data course beserta kategori dan lesson
+            const course = await Course.findByPk(enrollment.courseId, {
+                include: [
+                    { model: Category, through: { attributes: [] } },
+                    { model: Lesson }
+                ]
+            });
+            if (!course) throw new Error('Course tidak ditemukan');
+
+            const lessonCount = await course.getLessonCount();
+            const isLoggedIn = !!req.session.userId;
+
+            // Jika ada parameter download=true, kirim file untuk di-download
+            if (download === 'true') {
+                res.download(invoicePath, `invoice-${paymentId}.pdf`, (err) => {
+                    if (err) {
+                        console.error('Error saat mengirim file untuk download:', err);
+                        res.status(500).send(`<p style="color:red;">Gagal mengunduh invoice: ${err.message}</p>`);
+                    }
+                });
+            }
+
+            // Selalu tampilkan preview di invoiceView.ejs, bahkan saat download=true
+            res.render('invoiceView', {
+                invoicePath: `/invoices/invoice-${paymentId}-custom.pdf`,
+                paymentId,
+                isLoggedIn,
+                course,
+                lessonCount,
+                formatDate
+            });
+
         } catch (error) {
             console.error('Invoice view error:', error);
             res.status(404).send(`<p style="color:red;">Invoice tidak ditemukan: ${error.message}</p>`);
         }
     }
-
-
-
-
-
 
     static async getEasyInvoiceKey(req, res) {
         try {
@@ -501,12 +511,10 @@ class Controller {
     static async getInvoice(req, res) {
         try {
             const { paymentId } = req.params;
-            const fs = require('fs').promises;
-            const path = require('path');
             const invoicePath = path.join(__dirname, '../invoices', `invoice-${paymentId}-custom.pdf`);
 
             // Periksa apakah file ada
-            await fs.access(invoicePath);
+            await fsPromises.access(invoicePath);
 
             // Kirim file ke klien
             res.sendFile(invoicePath);

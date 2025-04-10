@@ -20,35 +20,35 @@ module.exports = (sequelize, DataTypes) => {
       try {
         // Validasi email
         if (!email) {
-          result.error = { type: 'email', message: 'Email is required' };
+          result.error = { type: 'email', message: 'Email wajib diisi.' };
           return result;
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          result.error = { type: 'email', message: 'Please enter a valid email address' };
+          result.error = { type: 'email', message: 'Masukkan alamat email yang valid.' };
           return result;
         }
 
         // Validasi password
         if (!password) {
-          result.error = { type: 'password', message: 'Password is required' };
+          result.error = { type: 'password', message: 'Kata sandi wajib diisi.' };
           return result;
         }
         if (password.length < 8) {
-          result.error = { type: 'password', message: 'Password must be at least 8 characters long' };
+          result.error = { type: 'password', message: 'Kata sandi harus minimal 8 karakter.' };
           return result;
         }
 
         // Cek email di database
         const user = await this.findOne({ where: { email } });
         if (!user) {
-          result.error = { type: 'email', message: 'Email not registered' };
+          result.error = { type: 'email', message: 'Email belum terdaftar.' };
           return result;
         }
 
         // Cek kecocokan password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-          result.error = { type: 'password', message: 'Invalid password' };
+          result.error = { type: 'password', message: 'Kata sandi salah.' };
           return result;
         }
 
@@ -68,35 +68,35 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false, // Changed from true to false to enforce requirement
       validate: {
-        notNull: { msg: 'Username is required' },
-        notEmpty: { msg: 'Username cannot be empty' }
+        notNull: { msg: 'Nama pengguna wajib diisi.' },
+        notEmpty: { msg: 'Nama pengguna tidak boleh kosong.' }
       }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: { msg: 'This email is already registered' },
+      unique: { msg: 'Email ini sudah terdaftar.' },
       validate: {
-        notNull: { msg: 'Email is required' },
-        notEmpty: { msg: 'Email cannot be empty' },
-        isEmail: { msg: 'Please enter a valid email address' }
+        notNull: { msg: 'Email wajib diisi.' },
+        notEmpty: { msg: 'Email tidak boleh kosong.' },
+        isEmail: { msg: 'Masukkan alamat email yang valid.' }
       }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Password is required' },
-        notEmpty: { msg: 'Password cannot be empty' },
-        len: { args: [8, Infinity], msg: 'Password must be at least 8 characters long' }
+        notNull: { msg: 'Kata sandi wajib diisi.' },
+        notEmpty: { msg: 'Kata sandi tidak boleh kosong.' },
+        len: { args: [8, Infinity], msg: 'Kata sandi minimal 8 karakter.' }
       }
     },
     role: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Role is required' },
-        notEmpty: { msg: 'Role cannot be empty' },
+        notNull: { msg: 'Peran wajib diisi' },
+        notEmpty: { msg: 'Peran tidak boleh kosong' },
       }
     },
     isVerified: {

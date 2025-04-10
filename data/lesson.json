@@ -1,82 +1,172 @@
 [
   {
     "title": "HTML Dasar",
-    "content": "Pengenalan tag HTML...",
+    "content": "Pelajaran ini mengajarkan struktur dasar halaman web menggunakan tag HTML seperti <html>, <head>, <body>, serta elemen seperti heading, paragraf, dan tautan.",
     "courseId": 1
   },
   {
     "title": "CSS Dasar",
-    "content": "Pengenalan selector CSS...",
+    "content": "Pelajaran ini menjelaskan cara menata tampilan halaman web dengan CSS, termasuk penggunaan selector, properti seperti color dan font-size, serta layout sederhana.",
+    "courseId": 1
+  },
+  {
+    "title": "JavaScript Interaktif",
+    "content": "Pelajaran ini memperkenalkan JavaScript untuk membuat halaman web interaktif, seperti menangani klik tombol dan manipulasi DOM.",
     "courseId": 1
   },
   {
     "title": "Pengenalan Keamanan Siber",
-    "content": "Dasar-dasar keamanan jaringan...",
+    "content": "Pelajaran ini membahas apa itu keamanan siber, pentingnya melindungi data, dan jenis ancaman seperti malware dan phishing.",
+    "courseId": 2
+  },
+  {
+    "title": "Enkripsi Dasar",
+    "content": "Pelajaran ini menjelaskan konsep enkripsi, perbedaan antara simetris dan asimetris, serta contoh penggunaannya dalam keamanan.",
     "courseId": 2
   },
   {
     "title": "Dasar-Dasar UI Design",
-    "content": "Prinsip desain antarmuka pengguna...",
+    "content": "Pelajaran ini mengajarkan prinsip desain antarmuka pengguna, seperti konsistensi, hierarki visual, dan pemilihan warna yang baik.",
     "courseId": 3
   },
   {
     "title": "Wireframing dengan Figma",
-    "content": "Cara membuat wireframe menggunakan Figma...",
+    "content": "Pelajaran ini memandu pengguna untuk membuat wireframe sederhana di Figma, termasuk penggunaan frame, shape, dan layout grid.",
+    "courseId": 3
+  },
+  {
+    "title": "Prototyping Interaktif",
+    "content": "Pelajaran ini menjelaskan cara membuat prototipe interaktif di Figma untuk mensimulasikan pengalaman pengguna.",
     "courseId": 3
   },
   {
     "title": "SQL Dasar",
-    "content": "Pengenalan query SQL untuk database...",
+    "content": "Pelajaran ini mengajarkan cara menulis query SQL sederhana seperti SELECT, INSERT, dan UPDATE untuk mengelola data.",
+    "courseId": 4
+  },
+  {
+    "title": "Relasi Database",
+    "content": "Pelajaran ini membahas konsep tabel relasional, primary key, foreign key, dan cara menghubungkan data antar tabel.",
     "courseId": 4
   },
   {
     "title": "Machine Learning Dasar",
-    "content": "Konsep dasar kecerdasan buatan dan ML...",
+    "content": "Pelajaran ini memperkenalkan konsep machine learning, jenis algoritma seperti regresi dan klasifikasi, serta aplikasinya.",
+    "courseId": 5
+  },
+  {
+    "title": "Preprocessing Data",
+    "content": "Pelajaran ini menjelaskan langkah-langkah pembersihan data sebelum digunakan dalam model machine learning.",
     "courseId": 5
   },
   {
     "title": "Pengenalan AWS",
-    "content": "Dasar-dasar layanan cloud dengan AWS...",
+    "content": "Pelajaran ini membahas layanan dasar AWS seperti EC2, S3, dan cara membuat akun serta mengatur instance pertama.",
+    "courseId": 6
+  },
+  {
+    "title": "Manajemen IAM",
+    "content": "Pelajaran ini menjelaskan cara mengatur hak akses pengguna di AWS menggunakan Identity and Access Management.",
     "courseId": 6
   },
   {
     "title": "Flutter untuk Pemula",
-    "content": "Membangun aplikasi mobile dengan Flutter...",
+    "content": "Pelajaran ini mengajarkan instalasi Flutter, struktur proyek, dan cara membuat aplikasi mobile pertama.",
     "courseId": 7
   },
   {
     "title": "Dart Dasar",
-    "content": "Pengenalan bahasa pemrograman Dart...",
+    "content": "Pelajaran ini memperkenalkan sintaks Dart seperti variabel, fungsi, dan kontrol alur untuk pemrograman Flutter.",
+    "courseId": 7
+  },
+  {
+    "title": "Widget Flutter",
+    "content": "Pelajaran ini menjelaskan penggunaan widget dasar seperti Text, Container, dan Row untuk membangun UI.",
     "courseId": 7
   },
   {
     "title": "Konfigurasi Router",
-    "content": "Cara mengatur router untuk jaringan...",
+    "content": "Pelajaran ini memandu cara mengatur router untuk jaringan lokal, termasuk pengaturan IP dan DHCP.",
     "courseId": 8
   },
   {
     "title": "Protokol Jaringan",
-    "content": "Memahami TCP/IP dan protokol lainnya...",
+    "content": "Pelajaran ini membahas TCP/IP, cara kerja protokol HTTP, dan pentingnya DNS dalam jaringan.",
     "courseId": 8
   },
   {
     "title": "CI/CD dengan Jenkins",
-    "content": "Automasi deployment dengan Jenkins...",
+    "content": "Pelajaran ini menjelaskan cara mengatur pipeline CI/CD menggunakan Jenkins untuk otomatisasi build dan deploy.",
     "courseId": 9
   },
   {
     "title": "Docker Dasar",
-    "content": "Pengenalan container dengan Docker...",
+    "content": "Pelajaran ini mengajarkan konsep container, cara membuat Dockerfile, dan menjalankan aplikasi di Docker.",
     "courseId": 9
   },
   {
     "title": "Python untuk Analisis Data",
-    "content": "Menggunakan Python untuk analisis data...",
+    "content": "Pelajaran ini memperkenalkan Python untuk analisis data dengan library Pandas untuk manipulasi tabel.",
     "courseId": 10
   },
   {
     "title": "Visualisasi Data",
-    "content": "Membuat grafik dengan Matplotlib...",
+    "content": "Pelajaran ini mengajarkan cara membuat grafik seperti bar chart dan line chart menggunakan Matplotlib.",
     "courseId": 10
+  },
+  {
+    "title": "Statistik Dasar",
+    "content": "Pelajaran ini membahas konsep statistik seperti mean, median, dan deviasi standar untuk analisis data.",
+    "courseId": 10
+  },
+  {
+    "title": "Node.js Dasar",
+    "content": "Pelajaran ini mengajarkan instalasi Node.js, penggunaan npm, dan cara membuat server sederhana.",
+    "courseId": 11
+  },
+  {
+    "title": "API dengan Express",
+    "content": "Pelajaran ini menjelaskan cara membangun RESTful API menggunakan Express untuk backend.",
+    "courseId": 11
+  },
+  {
+    "title": "Unity Interface",
+    "content": "Pelajaran ini memperkenalkan antarmuka Unity, scene, dan cara mengatur game object.",
+    "courseId": 12
+  },
+  {
+    "title": "Scripting dengan C#",
+    "content": "Pelajaran ini mengajarkan dasar C# untuk logika game seperti gerakan karakter dan skor.",
+    "courseId": 12
+  },
+  {
+    "title": "Pengenalan IoT",
+    "content": "Pelajaran ini membahas apa itu IoT, komponen seperti sensor dan mikrokontroler, serta contoh aplikasinya.",
+    "courseId": 13
+  },
+  {
+    "title": "Proyek Arduino",
+    "content": "Pelajaran ini memandu cara membuat proyek IoT sederhana menggunakan Arduino dan sensor suhu.",
+    "courseId": 13
+  },
+  {
+    "title": "Fungsi Murni",
+    "content": "Pelajaran ini menjelaskan konsep fungsi murni dalam pemrograman fungsional dan contohnya di Haskell.",
+    "courseId": 14
+  },
+  {
+    "title": "Rekursi",
+    "content": "Pelajaran ini membahas teknik rekursi untuk menyelesaikan masalah pemrograman secara elegan.",
+    "courseId": 14
+  },
+  {
+    "title": "Konsep Blockchain",
+    "content": "Pelajaran ini menjelaskan apa itu blockchain, cara kerja hash, dan pentingnya desentralisasi.",
+    "courseId": 15
+  },
+  {
+    "title": "Smart Contract",
+    "content": "Pelajaran ini mengajarkan dasar pembuatan smart contract menggunakan Solidity di Ethereum.",
+    "courseId": 15
   }
 ]

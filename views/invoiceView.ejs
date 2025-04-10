@@ -3,30 +3,95 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Invoice Pembayaran</title>
+    <title>Preview Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
   </head>
-  <body class="bg-gray-100">
-    <!-- Navbar sederhana -->
-    <nav class="bg-blue-600 text-white p-4">
-      <div class="container mx-auto">
-        <a href="/" class="font-bold text-xl">Knowlytics</a>
-        <!-- Tambahkan link navbar lain jika perlu -->
-      </div>
-    </nav>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <%- include('partials/navbar', { isLoggedIn }) %>
 
-    <div class="container mx-auto mt-8 p-4 bg-white rounded shadow">
-      <h1 class="text-2xl font-bold mb-4">Invoice Pembayaran</h1>
-      <p class="mb-4">Payment ID: <%= paymentId %></p>
-      <!-- Tampilkan PDF invoice via iframe -->
-      <iframe
-        src="<%= invoicePath %>"
-        class="w-full h-screen"
-        frameborder="0"
-      ></iframe>
+    <div class="container max-w-5xl mx-auto px-6 py-8 flex-grow">
+      <!-- Header section with title and button -->
+      <div class="mb-4">
+        <!-- Title and button in a flex container, adjust for mobile -->
+        <div
+          class="flex flex-col sm:flex-row sm:justify-between sm:items-center"
+        >
+          <h1 class="text-3xl font-bold text-gray-900 mb-4 sm:mb-0">
+            Lihat Invoice Pembayaran
+          </h1>
+          <!-- Button hidden on mobile, shown on sm+ screens -->
+          <a
+            href="/invoices/<%= paymentId %>"
+            class="hidden sm:inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+          >
+            Unduh Invoice
+          </a>
+        </div>
+
+        <!-- Paragraph -->
+        <p class="text-gray-600 mb-4">
+          Ini adalah bukti pembayaranmu (ID:
+          <span class="font-semibold"><%= paymentId %></span>).
+        </p>
+
+        <!-- Button shown only on mobile, below the paragraph -->
+        <a
+          href="/invoices/<%= paymentId %>"
+          class="sm:hidden block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition w-full text-center"
+        >
+          Unduh Invoice
+        </a>
+      </div>
+
+      <div
+        class="w-full h-[700px] border border-gray-200 rounded-lg overflow-auto mb-6 bg-white shadow-sm"
+      >
+        <iframe
+          src="<%= invoicePath %>"
+          class="w-full h-full rounded-lg"
+          title="Invoice Preview"
+        ></iframe>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Detail Kursus</h2>
+        <div class="space-y-3 text-gray-700">
+          <p>
+            <span class="font-medium">Nama Kursus:</span> <%= course.name ||
+            'Tidak tersedia' %>
+          </p>
+          <p>
+            <span class="font-medium">Deskripsi:</span> <%= course.description
+            || 'Tidak tersedia' %>
+          </p>
+          <p>
+            <span class="font-medium">Kategori:</span> <%= course.Categories &&
+            course.Categories.length > 0 ? course.Categories.map(cat =>
+            cat.name).join(', ') : 'Tidak tersedia' %>
+          </p>
+          <p>
+            <span class="font-medium">Jumlah Pelajaran:</span> <%= lessonCount
+            || '0' %>
+          </p>
+          <p>
+            <span class="font-medium">Durasi:</span> <%= course.duration ||
+            'Tidak tersedia' %>
+          </p>
+          <p>
+            <span class="font-medium">Dibuat Pada:</span> <%= course.createdAt ?
+            formatDate(course.createdAt) : 'Tidak tersedia' %>
+          </p>
+        </div>
+      </div>
     </div>
   </body>
 </html>
