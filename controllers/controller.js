@@ -70,11 +70,14 @@ class Controller {
         const isLoggedIn = !!req.session.userId;
         const errors = req.session.errors || {};
         const error = req.session.error || req.query.error || null;
-        const success = req.query.success || null;
+        const success = req.session.success || null;
         const formData = req.session.formData || {};
+
         delete req.session.errors;
         delete req.session.error;
+        delete req.session.success;
         delete req.session.formData;
+
         res.render('login', { error, errors, success, isLoggedIn, formData });
     }
 
@@ -570,11 +573,21 @@ class Controller {
     static async deleteUser(req, res) {
         try {
             const userId = req.session.userId;
-            await User.destroy({ where: { id: userId } });
-            req.session.destroy();
+
+            const user = await User.findByPk(userId);
+            if (!user) {
+                req.session.error = 'User not found.';
+                return res.redirect('/login');
+            }
+
+            const userName = user.username;
+            await user.destroy();
+
+            req.session.success = `User ${userName} deleted successfully.`;
             res.redirect('/login');
         } catch (error) {
-            res.send(error.message);
+            req.session.error = error.message;
+            res.redirect('/login');
         }
     }
 }
