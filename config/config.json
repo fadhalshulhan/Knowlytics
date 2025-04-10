@@ -1,0 +1,27 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "Knowlytics_DB_dev",
+    "host": "localhost",
+    "dialect": "postgres",
+    "idle": 500
+  },
+  "test": {
+    "username": "postgres",
+    "password": "postgres",
+
+    "database": "Knowlytics_DB_test",
+    "host": "localhost",
+    "dialect": "postgres",
+    "idle": 500
+  },
+  "production": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "Knowlytics_DB_prod",
+    "host": "localhost",
+    "dialect": "postgres",
+    "idle": 500
+  }
+}

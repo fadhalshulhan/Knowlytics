@@ -1,10 +1,10 @@
-# Knowlytics
+# Knowlytics MVP
 
-![Knowlytics Banner](https://via.placeholder.com/1200x300.png?text=Knowlytics+-+Empower+Knowledge+with+Analytics)
+![Knowlytics Banner](https://via.placeholder.com/1200x300.png?text=Knowlytics+-+Minimal+EdTech+Platform)
 
-**Knowlytics** is a platform designed to empower users with knowledge through advanced data analytics. By combining learning tools with powerful analytical capabilities, it provides actionable insights for better decision-making. Ideal for projects focused on education, data science, and technology-driven solutions.
+**Knowlytics MVP** is a minimal implementation of an Education Technology (EdTech) platform designed to demonstrate core functionality for online learning. Users can register, log in, browse courses, and purchase courses using Stripe. Admins can manage courses by creating and deleting them. Invoices are generated using EasyInvoice after each successful purchase, providing a seamless experience for tracking transactions.
 
-This project is an Education Technology (EdTech) platform where users can register, log in, browse courses, purchase courses using Midtrans Payment Gateway, and access learning materials (videos and PDFs). It includes role-based access for Buyers, Sellers, and Admins, with advanced analytics features such as course popularity statistics, purchase trends, and personalized course recommendations.
+This MVP focuses on essential features to validate the concept, with plans for future enhancements like email notifications, file uploads, and additional analytics.
 
 ---
 
@@ -27,52 +27,56 @@ This project is an Education Technology (EdTech) platform where users can regist
 ## Features
 
 - **User Authentication**:
-  - Secure registration and login system with middleware, session management (`express-session`), and password hashing using `bcrypt`.
-  - Token-based authentication using `jsonwebtoken` (MVP feature).
+
+  - Secure registration and login system using session management (`express-session`) and password hashing with `bcrypt`.
+  - Role-based access for Buyers, Sellers, and Admins.
+  - Token-based integration with Stripe using `jsonwebtoken` for customer management.
+
 - **Role-Based Access**:
-  - **Buyer**: Browse courses, purchase courses via Midtrans, view purchased courses, see purchase history, and receive personalized course recommendations.
-  - **Seller**: Create courses (via `userId` in `Courses`).
-  - **Admin**: Perform CRUD operations on courses and view analytics (e.g., courses per category, popular courses).
+
+  - **Buyer**: Browse courses, purchase courses via Stripe, and view purchased courses.
+  - **Seller**: Create courses (linked via `userId` in `Courses`).
+  - **Admin**: Perform basic CRUD operations on courses (create and delete).
+
 - **Course Management**:
-  - Browse courses with search and sort functionality (using Sequelize operators).
-  - View course details, including videos (YouTube/Google Drive) and PDFs (Google Drive), accessible only after successful purchase.
-  - Purchase courses using Midtrans Payment Gateway (for Buyers).
-  - Admin can add, edit, and delete courses with interactive delete notifications.
-- **Analytics and Insights**:
-  - Admin dashboard with statistics:
-    - Number of courses per category (visualized with Chart.js).
-    - Top 5 popular courses based on purchases.
-  - Purchase history with a graph of purchases per month (visualized with Chart.js).
-  - Course recommendations for Buyers based on purchased categories.
+
+  - Browse courses and view course details.
+  - Purchase courses using Stripe (for Buyers).
+  - Admin can add and delete courses through a simple interface.
+
 - **Payment Integration**:
-  - Integrated with Midtrans Payment Gateway for secure online payments.
-  - Supports various payment methods (credit/debit cards, bank transfers, e-wallets) via Midtrans Snap.
-- **Responsive Design**:
-  - Built with Tailwind CSS for a modern, responsive UI.
-  - Interactive notifications using SweetAlert2 (for delete confirmation) and Toastify-js (for success messages).
+
+  - Integrated with Stripe (`stripe`) for secure online payments.
+  - Supports payment processing for course purchases.
+
+- **Invoice Generation**:
+  - Generates PDF invoices using EasyInvoice (`easyinvoice`) after successful purchases.
+  - Invoices are stored locally for record-keeping.
 
 ---
 
 ## Technologies Used
 
 ### Backend
+
 - **Express.js**: Web framework for Node.js to handle routing and server logic.
 - **Sequelize**: ORM for PostgreSQL to manage database models, migrations, and seeders.
 - **PostgreSQL**: Database for storing user, course, and purchase data.
-- **bcrypt**: For password hashing.
+- **bcrypt**: For secure password hashing.
 - **express-session**: For session management.
-- **jsonwebtoken (JWT)**: For token-based authentication (MVP feature).
-- **midtrans-client**: For integrating Midtrans Payment Gateway.
-- **dotenv**: For managing environment variables (e.g., Midtrans credentials).
+- **jsonwebtoken (JWT)**: For token-based authentication with Stripe.
+- **easyinvoice**: For generating PDF invoices after purchases.
+- **pdf-node**: For generating PDF documents (not used in MVP but included for future enhancements).
+- **stripe**: For payment processing and customer management.
+- **dotenv**: For managing environment variables (e.g., Stripe and EasyInvoice credentials).
 
 ### Frontend
+
 - **HTML/EJS**: Templating engine for rendering dynamic views.
 - **Tailwind CSS**: Utility-first CSS framework for responsive and modern styling.
-- **Chart.js**: For data visualization (graphs in analytics).
-- **SweetAlert2**: For interactive delete confirmation with Promise Chaining.
-- **Toastify-js**: For toast notifications after successful actions.
 
 ### Language
+
 - **JavaScript**: For both backend (Node.js) and frontend logic.
 
 ---
@@ -81,19 +85,14 @@ This project is an Education Technology (EdTech) platform where users can regist
 
 The project uses the following tables with their relationships:
 
-- **Users**: Stores user data (id, username, email, password, role).
-- **UserProfiles**: Stores user profile data (id, userId, fullName, phone) - **One-to-One** with `Users`.
-- **Courses**: Stores course data (id, name, description, duration, userId, videoUrl, pdfUrl).
-- **Categories**: Stores category data (id, name).
-- **CourseCategories**: Junction table for **Many-to-Many** relationship between `Courses` and `Categories`.
-- **UserCourses**: Junction table for **Many-to-Many** relationship between `Users` (Buyers) and `Courses` (purchases).
+- **Users**: Stores user data (`id`, `username`, `email`, `password`, `role`).
+- **Courses**: Stores course data (`id`, `name`, `description`, `price`, `userId`).
+- **UserCourses**: Junction table for **Many-to-Many** relationship between `Users` (Buyers) and `Courses` (purchases), with `stripePaymentId` to track payments.
 
 ### Relationships
-- **One-to-One**: `Users` ↔ `UserProfiles` (via `userId`).
-- **One-to-Many**: `Users` → `Courses` (via `userId`).
-- **Many-to-Many**: 
-  - `Courses` ↔ `Categories` (via `CourseCategories`).
-  - `Users` ↔ `Courses` (via `UserCourses`).
+
+- **One-to-Many**: `Users` → `Courses` (via `userId` in `Courses`).
+- **Many-to-Many**: `Users` ↔ `Courses` (via `UserCourses`).
 
 Below is the ERD for the Knowlytics database:
 
@@ -107,21 +106,16 @@ Below is the ERD for the Knowlytics database:
 knowlytics/
 ├── config/
 │   ├── config.json           # Database configuration for Sequelize
-│   └── midtrans.js           # Midtrans configuration
+│   └── stripe.js             # Stripe configuration
 ├── data/
 │   ├── users.json            # Seed data for Users
-│   ├── userProfiles.json     # Seed data for UserProfiles
 │   ├── courses.json          # Seed data for Courses
-│   ├── categories.json       # Seed data for Categories
-│   ├── courseCategories.json # Seed data for CourseCategories
 │   └── userCourses.json      # Seed data for UserCourses
 ├── migrations/               # Sequelize migrations
 ├── models/                   # Sequelize models
 │   ├── index.js
 │   ├── user.js
-│   ├── userProfile.js
-│   ├── course.js
-│   └── category.js
+│   └── course.js
 ├── seeders/                  # Sequelize seeders
 ├── controllers/
 │   └── controller.js         # All controller logic
@@ -131,25 +125,17 @@ knowlytics/
 │   ├── landing.ejs          # Landing page
 │   ├── login.ejs            # Login page
 │   ├── register.ejs         # Register page
-│   ├── courses.ejs          # List of courses with search and recommendations
-│   ├── courseDetail.ejs     # Course detail page with video and PDF
+│   ├── courses.ejs          # List of courses
+│   ├── courseDetail.ejs     # Course detail page
 │   ├── myCourses.ejs        # List of purchased courses
-│   ├── purchaseHistory.ejs  # Purchase history with analytics
 │   └── admin/
-│       ├── dashboard.ejs    # Admin dashboard with analytics
 │       ├── courses.ejs      # Admin course management
-│       ├── addCourse.ejs    # Form to add a course
-│       └── editCourse.ejs   # Form to edit a course
+│       └── addCourse.ejs    # Form to add a course
 ├── routes/
-│   └── index.js             # All routes
-├── helpers/
-│   └── helper.js            # Helper functions (formatDuration, formatDate)
-├── middleware/
-│   └── auth.js              # Authentication and authorization middleware
-├── public/
-│   └── css/                 # Tailwind CSS output (if using local Tailwind)
-│       └── output.css
-├── .env                     # Environment variables (e.g., Midtrans credentials)
+│   ├── index.js             # Routes for user-related functionality
+│   └── adminRouter.js       # Routes for admin-related functionality
+├── invoices/                # Folder for generated invoices
+├── .env                     # Environment variables (e.g., Stripe credentials)
 ├── .gitignore               # Git ignore file
 ├── app.js                   # Main application file
 ├── package.json             # Project dependencies and scripts
@@ -160,31 +146,36 @@ knowlytics/
 
 ## Prerequisites
 
-Before setting up Knowlytics, ensure you have the following installed:
+Before setting up Knowlytics MVP, ensure you have the following installed:
 
 - **Node.js** (v14 or higher): [Download Node.js](https://nodejs.org/)
 - **PostgreSQL** (v12 or higher): [Download PostgreSQL](https://www.postgresql.org/download/)
 - **npm** (v6 or higher): Included with Node.js installation
 - **Git**: [Download Git](https://git-scm.com/downloads) (for cloning the repository)
+- **Stripe Account**: Register at [Stripe](https://stripe.com/) to obtain your `STRIPE_SECRET_KEY`.
+- **EasyInvoice Account**: Register at [EasyInvoice](https://app.budgetinvoice.com/register) to obtain your `EASYINVOICE_API_KEY`.
 
 ---
 
 ## Installation
 
-Follow these steps to set up and run Knowlytics on your local machine:
+Follow these steps to set up and run Knowlytics MVP on your local machine:
 
 1. **Clone the Repository**:
+
    ```bash
    git clone https://github.com/your-username/knowlytics.git
    cd knowlytics
    ```
 
 2. **Install Dependencies**:
+
    ```bash
    npm install
    ```
 
    This will install all required packages, including:
+
    - `express`
    - `sequelize`
    - `pg` (PostgreSQL driver)
@@ -192,13 +183,13 @@ Follow these steps to set up and run Knowlytics on your local machine:
    - `bcrypt`
    - `jsonwebtoken`
    - `ejs`
-   - `sweetalert2`
-   - `toastify-js`
-   - `chart.js`
-   - `midtrans-client` (for Midtrans Payment Gateway)
+   - `easyinvoice` (for invoice generation)
+   - `pdf-node` (for PDF generation, not used in MVP)
+   - `stripe` (for payment processing)
    - `dotenv` (for environment variables)
 
 3. **Setup PostgreSQL Database**:
+
    - Create a PostgreSQL database named `Knowlytics_DB`:
      ```bash
      psql -U postgres -c "CREATE DATABASE Knowlytics_DB;"
@@ -234,53 +225,62 @@ Follow these steps to set up and run Knowlytics on your local machine:
      ```
 
 4. **Setup Environment Variables**:
-   - Create a `.env` file in the root directory and add your Midtrans credentials:
-     ```env
-     MIDTRANS_SERVER_KEY=YOUR_SERVER_KEY
-     MIDTRANS_CLIENT_KEY=YOUR_CLIENT_KEY
-     ```
-   - Replace `YOUR_SERVER_KEY` and `YOUR_CLIENT_KEY` with your actual Midtrans credentials.
-   - Ensure `.env` is added to `.gitignore` to prevent it from being uploaded to GitHub.
 
-5. **Setup Midtrans Configuration**:
-   - Register for a Midtrans account at [Midtrans](https://midtrans.com/).
-   - Obtain your **Merchant ID**, **Client Key**, and **Server Key** from the Midtrans dashboard.
-   - The credentials should be added to the `.env` file as shown above.
-   - Configure the **Notification URL** in the Midtrans dashboard to point to `http://localhost:3000/midtrans-notification` (or your production URL).
+   - Create a `.env` file in the root directory and add your credentials:
+     ```env
+     STRIPE_SECRET_KEY=your-stripe-secret-key
+     EASYINVOICE_API_KEY=your-easyinvoice-api-key
+     ```
+   - Replace `your-stripe-secret-key` with your Stripe secret key (obtainable from the Stripe Dashboard).
+   - Replace `your-easyinvoice-api-key` with your EasyInvoice API key (obtainable after registering at EasyInvoice).
+   - Ensure `.env` is added to `.gitignore` to prevent it from being uploaded to GitHub:
+     ```gitignore
+     node_modules/
+     .env
+     invoices/
+     ```
+
+5. **Setup Stripe and EasyInvoice**:
+
+   - **Stripe**: Register for a Stripe account at [Stripe](https://stripe.com/) to get your `STRIPE_SECRET_KEY`. You can use Stripe's test mode for development.
+   - **EasyInvoice**: Register for an EasyInvoice account at [EasyInvoice](https://app.budgetinvoice.com/register) to get your `EASYINVOICE_API_KEY`. The free tier allows up to 25 invoices per 15 days.
 
 6. **Run Migrations**:
+   Run the Sequelize migrations to create the necessary tables in your database:
+
    ```bash
    npx sequelize-cli db:migrate
    ```
 
    This will create the following tables:
+
    - `Users`
-   - `UserProfiles`
    - `Courses`
-   - `Categories`
-   - `CourseCategories`
    - `UserCourses`
 
 7. **Run Seeders**:
+   Populate the database with sample data using the seeders:
+
    ```bash
    npx sequelize-cli db:seed:all
    ```
 
-   This will populate the database with sample data, including:
+   This will populate the database with:
+
    - Users (with roles: `buyer`, `seller`, `admin`)
-   - User profiles
-   - Courses (with video and PDF URLs)
-   - Categories
-   - Course-Category relationships
-   - Purchase history
+   - Courses
+   - Purchase history (UserCourses)
 
 8. **(Optional) Setup Tailwind CSS Locally**:
    If you prefer to use Tailwind CSS locally instead of the CDN:
+
    ```bash
    npm install -D tailwindcss postcss autoprefixer
    npx tailwindcss init
    ```
+
    Update `tailwind.config.js`:
+
    ```javascript
    module.exports = {
      content: ["./views/**/*.ejs"],
@@ -288,24 +288,32 @@ Follow these steps to set up and run Knowlytics on your local machine:
      plugins: [],
    };
    ```
+
    Create `public/css/input.css`:
+
    ```css
    @tailwind base;
    @tailwind components;
    @tailwind utilities;
    ```
+
    Add script to `package.json`:
+
    ```json
    "scripts": {
      "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch"
    }
    ```
+
    Run:
+
    ```bash
    npm run build:css
    ```
 
 9. **Run the Application**:
+   Start the application:
+
    ```bash
    node app.js
    ```
@@ -317,32 +325,34 @@ Follow these steps to set up and run Knowlytics on your local machine:
 ## Usage
 
 1. **Register and Login**:
+
    - Visit `http://localhost:3000/register` to create an account (choose role: `buyer` or `seller`).
    - Login at `http://localhost:3000/login`.
    - Admin account can be accessed using:
-     - Email: `admin1@example.com`
-     - Password: `admin12345`
+     - **Email**: `admin1@example.com`
+     - **Password**: `admin12345`
 
 2. **Browse and Purchase Courses**:
-   - Go to `http://localhost:3000/courses` to browse available courses with search and sort functionality.
-   - Click "View Details" to see course information.
-   - Buyers can purchase a course via Midtrans Payment Gateway and access its video (YouTube/Google Drive) and PDF (Google Drive) materials after successful payment.
 
-3. **View Purchased Courses and History**:
+   - Go to `http://localhost:3000/courses` to browse available courses.
+   - Click "View Details" to see course information.
+   - Buyers can purchase a course via Stripe. **Note**: The current implementation simulates payment by directly creating a Payment Intent. For a full payment flow, integrate Stripe Elements in the frontend to collect payment details.
+   - After a successful purchase, an invoice will be generated using EasyInvoice and saved in the `invoices/` folder.
+
+3. **View Purchased Courses**:
+
    - Buyers can see their purchased courses at `http://localhost:3000/my-courses`.
-   - Purchase history with analytics (purchases per month) is available at `http://localhost:3000/purchase-history`.
 
 4. **Admin Dashboard**:
-   - Admins can access the dashboard at `http://localhost:3000/admin/dashboard` to view analytics:
-     - Number of courses per category (bar chart).
-     - Top 5 popular courses based on purchases.
-   - Manage courses (CRUD) at `http://localhost:3000/admin/courses`.
+   - Admins can manage courses at `http://localhost:3000/admin/courses`.
+   - Add new courses via `http://localhost:3000/admin/courses/add`.
+   - Delete courses directly from the admin dashboard.
 
 ---
 
 ## Sequelize CLI Commands
 
-The following Sequelize CLI commands were used to create models and migrations:
+The following Sequelize CLI commands were used to create models, migrations, and seeders:
 
 ```bash
 # Initialize Sequelize
@@ -350,23 +360,23 @@ npx sequelize-cli init
 
 # Create Models and Migrations
 npx sequelize-cli model:generate --name User --attributes "username:string,email:string,password:string,role:string"
-npx sequelize-cli model:generate --name UserProfile --attributes "userId:integer,fullName:string,phone:string"
-npx sequelize-cli model:generate --name Course --attributes "name:string,description:string,duration:integer,userId:integer,videoUrl:string,pdfUrl:string"
-npx sequelize-cli model:generate --name Category --attributes "name:string"
+npx sequelize-cli model:generate --name Course --attributes "name:string,description:string,price:integer,userId:integer"
 
 # Create Junction Tables
-npx sequelize-cli migration:generate --name create-course-categories
 npx sequelize-cli migration:generate --name create-user-courses
 
-# Add Columns
-npx sequelize-cli migration:generate --name add-videoUrl-and-pdfUrl-to-courses
+# Run Migrations
+npx sequelize-cli db:migrate
+
+# Run Seeders
+npx sequelize-cli db:seed:all
 ```
 
 ---
 
 ## Contributing
 
-We welcome contributions to improve Knowlytics! To contribute:
+We welcome contributions to improve Knowlytics MVP! To contribute:
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature/your-feature`).
@@ -387,4 +397,4 @@ This project is licensed under the MIT License.
 For any inquiries, please contact:
 
 - **Fadhal** (fadhal.kerja@gmail.com)
-- **Iqbal** (iqbal@example.com)
+- **Iqbal** (iqbalfarhan13@yahoo.com)

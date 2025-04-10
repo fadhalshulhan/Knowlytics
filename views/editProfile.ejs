@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Knowlytics - Edit Profil</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4 shadow-md">
+      <div class="container mx-auto flex justify-between items-center">
+        <a
+          href="/"
+          class="text-white text-xl font-bold hover:text-gray-200 transition duration-200"
+          >Knowlytics</a
+        >
+        <div class="space-x-4">
+          <% if (isLoggedIn) { %>
+          <a
+            href="/edit-profile"
+            class="text-white hover:text-gray-200 transition duration-200"
+            >Edit Profil</a
+          >
+          <a
+            href="/logout"
+            class="text-white hover:text-gray-200 transition duration-200"
+            >Keluar</a
+          >
+          <% } else { %>
+          <a
+            href="/login"
+            class="text-white hover:text-gray-200 transition duration-200"
+            >Masuk</a
+          >
+          <a
+            href="/register"
+            class="text-white hover:text-gray-200 transition duration-200"
+            >Daftar</a
+          >
+          <% } %>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <div class="flex-grow flex items-center justify-center py-12">
+      <div class="w-full max-w-lg p-8 bg-white rounded-xl shadow-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+          Edit Profil Anda
+        </h1>
+        <% if (error) { %>
+        <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-6 text-center">
+          <%= error %>
+        </div>
+        <% } %>
+        <form action="/edit-profile" method="POST" class="space-y-6">
+          <div>
+            <label for="username" class="block text-gray-700 font-medium"
+              >Nama Pengguna</label
+            >
+            <input
+              type="text"
+              name="username"
+              id="username"
+              value="<%= user.username || '' %>"
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors && errors.username ? 'border-red-500' : '' %>"
+              placeholder="Masukkan nama pengguna"
+            />
+            <% if (errors && errors.username) { %>
+            <p class="text-red-600 text-sm mt-1"><%= errors.username %></p>
+            <% } %>
+          </div>
+          <div>
+            <label for="email" class="block text-gray-700 font-medium"
+              >Email</label
+            >
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value="<%= user.email %>"
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors && errors.email ? 'border-red-500' : '' %>"
+              placeholder="Masukkan email Anda"
+            />
+            <% if (errors && errors.email) { %>
+            <p class="text-red-600 text-sm mt-1"><%= errors.email %></p>
+            <% } %>
+          </div>
+          <div>
+            <label for="fullName" class="block text-gray-700 font-medium"
+              >Nama Lengkap</label
+            >
+            <input
+              type="text"
+              name="fullName"
+              id="fullName"
+              value="<%= profile ? profile.fullName : '' %>"
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors && errors.fullName ? 'border-red-500' : '' %>"
+              placeholder="Masukkan nama lengkap"
+            />
+            <% if (errors && errors.fullName) { %>
+            <p class="text-red-600 text-sm mt-1"><%= errors.fullName %></p>
+            <% } %>
+          </div>
+          <div>
+            <label for="phone" class="block text-gray-700 font-medium"
+              >Nomor Telepon</label
+            >
+            <input
+              type="text"
+              name="phone"
+              id="phone"
+              value="<%= profile ? profile.phone : '' %>"
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <%= errors && errors.phone ? 'border-red-500' : '' %>"
+              placeholder="Masukkan nomor telepon"
+            />
+            <% if (errors && errors.phone) { %>
+            <p class="text-red-600 text-sm mt-1"><%= errors.phone %></p>
+            <% } %>
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+          >
+            Simpan Perubahan
+          </button>
+        </form>
+        <div class="mt-6 text-center">
+          <a
+            href="/delete-user"
+            class="text-red-600 font-semibold hover:underline"
+            onclick="return confirm('Yakin ingin menghapus akun Anda? Semua data akan hilang permanently.')"
+            >Hapus Akun</a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

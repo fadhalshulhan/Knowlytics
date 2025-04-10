@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowlytics - Belajar dengan Mudah</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <%- include('partials/navbar', { isLoggedIn }) %>
+  <div class="container mx-auto px-4 sm:px-6 py-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Selamat Datang di Knowlytics</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Jelajahi pengetahuan baru dengan cara yang mudah, cerdas, dan menyenangkan bersama kami!</p>
+    </div>
+
+    <% if (success) { %>
+      <div class="bg-green-100 text-green-700 p-4 rounded-lg mb-6 text-center"><%= success %></div>
+    <% } %>
+
+    <!-- Bagian Search dan Filter -->
+    <div class="mb-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <!-- Search -->
+      <form action="/" method="GET" class="flex w-full sm:w-auto">
+        <input
+          type="text"
+          name="search"
+          value="<%= search || '' %>"
+          placeholder="Cari kursus favoritmu..."
+          class="p-3 border rounded-l-lg w-full sm:w-80 md:w-96 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+        >
+        <button type="submit" class="bg-blue-600 text-white p-3 rounded-r-lg hover:bg-blue-700 transition duration-200">Cari</button>
+      </form>
+
+      <!-- Filter Kategori -->
+      <form action="/" method="GET" class="flex w-full sm:w-auto">
+        <select
+          name="category"
+          class="p-3 border rounded-l-lg w-full sm:w-48 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+        >
+          <option value="">Semua Kategori</option>
+          <% const categories = [...new Set(courses.flatMap(course => course.Categories.map(cat => cat.name)))]; %>
+          <% categories.forEach(cat => { %>
+            <option value="<%= cat %>" <%= category === cat ? 'selected' : '' %>><%= cat %></option>
+          <% }) %>
+        </select>
+        <button type="submit" class="bg-blue-600 text-white p-3 rounded-r-lg hover:bg-blue-700 transition duration-200">Filter</button>
+      </form>
+
+      <!-- Clear Filter -->
+      <% if (search || category) { %>
+        <a href="/" class="text-blue-600 hover:underline">Hapus Filter</a>
+      <% } %>
+    </div>
+
+    <!-- Daftar Kursus -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <% if (courses.length === 0) { %>
+        <p class="text-gray-600 text-center col-span-full">Tidak ada kursus yang ditemukan untuk "<%= search || '' %>".</p>
+      <% } else { %>
+        <% courses.forEach(course => { %>
+          <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
+            <h2 class="text-xl font-bold text-gray-800 mb-2"><%= course.name %></h2>
+            <p class="text-gray-600 mb-3"><%= course.description %></p>
+            <p class="text-gray-500 text-sm">Durasi: <%= course.courseInfo %></p>
+            <p class="text-gray-500 text-sm">Kategori: <%= course.Categories.map(cat => cat.name).join(', ') %></p>
+            <a href="/courses/<%= course.id %>" class="inline-block mt-4 text-blue-600 font-semibold hover:underline">Lihat Detail Kursus</a>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+    <!-- Pagination  -->
+    <% if (count > 0 && totalPages > 1) { %>
+      <div class="mt-4 flex justify-center">
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="/?page=<%= i %><%= sort ? '&sort=' + sort : '' %><%= search ? '&search=' + search : '' %><%= category ? '&category=' + category : '' %>" class="mx-1 px-3 py-1 border rounded <%= page == i ? 'bg-blue-600 text-white' : 'bg-white text-blue-600' %>"><%= i %></a>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

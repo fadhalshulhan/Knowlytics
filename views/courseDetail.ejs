@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Kursus</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+    <%- include('partials/navbar', { isLoggedIn }) %>
+    <div class="container mx-auto px-6 py-10">
+      <div class="bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">
+          <%= course.name %>
+        </h1>
+        <p class="text-gray-600 text-lg mb-4 leading-relaxed">
+          <%= course.description %>
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600 mb-6">
+          <p>
+            <span class="font-semibold">Durasi:</span> <%= course.courseInfo %>
+          </p>
+          <p>
+            <span class="font-semibold">Dibuat Pada:</span> <%=
+            formatDate(course.createdAt) %>
+          </p>
+          <p>
+            <span class="font-semibold">Jumlah Pelajaran:</span> <%= lessonCount
+            %>
+          </p>
+          <p>
+            <span class="font-semibold">Kategori:</span> <%=
+            course.Categories.map(cat => cat.name).join(', ') %>
+          </p>
+        </div>
+        <!-- <button
+          onclick="openEnrollModal('<%= course.id %>')"
+          class="bg-blue-600 text-white py-3 px-6 rounded-lg"
+        >
+          Daftar Sekarang
+        </button> -->
+        <button
+          type="button"
+          onclick="window.location.href='/payment?courseId=<%= course.id %>'"
+          class="bg-blue-600 text-white py-3 px-6 rounded-lg"
+        >
+          Daftar Sekarang
+        </button>
+      </div>
+
+      <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6">
+        Daftar Pelajaran
+      </h2>
+      <div class="space-y-6">
+        <% course.Lessons.forEach(lesson => { %>
+        <div
+          class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-200"
+        >
+          <h3 class="text-xl font-semibold text-gray-800">
+            <%= lesson.title %>
+          </h3>
+          <p class="text-gray-600 mt-2"><%= lesson.content %></p>
+          <p class="text-gray-500 text-sm mt-2">
+            Dibuat Pada: <%= formatDate(lesson.createdAt) %>
+          </p>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+  <!-- Modal -->
+  <div
+    id="enrollModal"
+    class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex items-center justify-center"
+  >
+    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+      <h2 class="text-xl font-bold mb-4">Pembayaran Kursus</h2>
+      <div id="modalContent" class="text-sm text-gray-700">Memuat...</div>
+      <button
+        onclick="closeEnrollModal()"
+        class="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+      >
+        Tutup
+      </button>
+    </div>
+  </div>
+
+  <script>
+    async function openEnrollModal(courseId) {
+      document.getElementById("enrollModal").classList.remove("hidden");
+      const modalContent = document.getElementById("modalContent");
+      modalContent.innerHTML = "Memuat form pembayaran...";
+
+      try {
+        const res = await fetch(`/courses/enroll-popup?courseId=${courseId}`);
+        const html = await res.text();
+        modalContent.innerHTML = html;
+      } catch (error) {
+        modalContent.innerHTML =
+          '<p style="color:red;">Gagal memuat form pembayaran.</p>';
+      }
+    }
+
+    function closeEnrollModal() {
+      document.getElementById("enrollModal").classList.add("hidden");
+    }
+  </script>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "knowlytics",
+  "version": "1.0.0",
+  "description": "![Knowlytics Banner](https://via.placeholder.com/1200x300.png?text=Knowlytics+-+Minimal+EdTech+Platform)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7",
+    "easyinvoice": "^3.0.47",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "pg": "^8.14.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
+    "stripe": "^18.0.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
+  }
+}

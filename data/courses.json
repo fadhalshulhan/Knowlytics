@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Pemrograman Web",
+    "description": "Kursus ini mengajarkan dasar-dasar pemrograman web.",
+    "duration": 30
+  },
+  {
+    "name": "Keamanan Siber",
+    "description": "Kursus ini mengajarkan dasar-dasar keamanan siber.",
+    "duration": 40
+  },
+  {
+    "name": "Desain UI/UX untuk Pemula",
+    "description": "Belajar mendesain antarmuka pengguna yang menarik.",
+    "duration": 25
+  },
+  {
+    "name": "Manajemen Basis Data",
+    "description": "Kursus tentang pengelolaan dan penggunaan database.",
+    "duration": 35
+  },
+  {
+    "name": "Pengantar Kecerdasan Buatan",
+    "description": "Memahami dasar-dasar AI dan aplikasinya.",
+    "duration": 50
+  },
+  {
+    "name": "Cloud Computing Dasar",
+    "description": "Pengenalan teknologi cloud dan penyedia layanan.",
+    "duration": 45
+  },
+  {
+    "name": "Pengembangan Aplikasi Mobile",
+    "description": "Belajar membuat aplikasi mobile dengan Flutter.",
+    "duration": 35
+  },
+  {
+    "name": "Dasar Jaringan Komputer",
+    "description": "Memahami konsep dasar jaringan dan konfigurasi.",
+    "duration": 30
+  },
+  {
+    "name": "DevOps untuk Pemula",
+    "description": "Pengenalan DevOps dan alat-alatnya.",
+    "duration": 40
+  },
+  {
+    "name": "Analisis Data dengan Python",
+    "description": "Kursus untuk menganalisis dan memvisualisasikan data.",
+    "duration": 45
+  }
+]
