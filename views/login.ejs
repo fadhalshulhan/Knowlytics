@@ -17,6 +17,28 @@
       body {
         font-family: "Inter", sans-serif;
       }
+      .success-message {
+        background-color: #10b981;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        transition: opacity 0.3s ease;
+      }
+      .error-message {
+        background-color: #ef4444;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        transition: opacity 0.3s ease;
+      }
     </style>
   </head>
   <body class="bg-gray-100 min-h-screen flex flex-col">
@@ -31,12 +53,12 @@
           Lanjutkan belajarmu sekarang!
         </p>
         <% if (success) { %>
-        <div class="bg-green-100 text-green-700 p-3 rounded-lg mb-4">
-          <%= success %>
+        <div id="success-notification" class="success-message">
+          <span><%= success %></span>
         </div>
-        <% } %> <% if (errors.general) { %>
-        <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
-          <%= errors.general %>
+        <% } %> <% if (error) { %>
+        <div id="error-notification" class="error-message">
+          <span><%= error %></span>
         </div>
         <% } %>
         <form action="/login" method="POST" class="space-y-6">
@@ -48,11 +70,11 @@
               type="email"
               name="email"
               id="email"
-              value="<%= formData.email || '' %>"
+              value="<%= formData && formData.email ? formData.email : '' %>"
               class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Emailmu"
             />
-            <% if (errors.email) { %>
+            <% if (errors && errors.email) { %>
             <p class="text-red-500 text-sm mt-1"><%= errors.email %></p>
             <% } %>
           </div>
@@ -75,7 +97,7 @@
                 <span class="material-symbols-outlined">visibility_off</span>
               </button>
             </div>
-            <% if (errors.password) { %>
+            <% if (errors && errors.password) { %>
             <p class="text-red-500 text-sm mt-1"><%= errors.password %></p>
             <% } %>
           </div>
@@ -95,5 +117,28 @@
       </div>
     </div>
     <script src="/helpers/togglePassword.js"></script>
+    <script>
+      const successNotification = document.getElementById(
+        "success-notification"
+      );
+      if (successNotification) {
+        setTimeout(() => {
+          successNotification.style.opacity = "0";
+          setTimeout(() => {
+            successNotification.remove();
+          }, 300);
+        }, 1000);
+      }
+
+      const errorNotification = document.getElementById("error-notification");
+      if (errorNotification) {
+        setTimeout(() => {
+          errorNotification.style.opacity = "0";
+          setTimeout(() => {
+            errorNotification.remove();
+          }, 300);
+        }, 1000);
+      }
+    </script>
   </body>
 </html>
