@@ -413,7 +413,6 @@ This project is licensed under the MIT License.
 For any inquiries, please contact:
 
 - **Fadhal** (fadhal.kerja@gmail.com)
-- **Iqbal** (iqbalfarhan13@yahoo.com)
 
 ---
 
